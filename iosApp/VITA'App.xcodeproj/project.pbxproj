@@ -299,7 +299,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6T2YLG38V5;
+				DEVELOPMENT_TEAM = GEZQXQPAD3;
 				INFOPLIST_FILE = "$(SRCROOT)/VITA'App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -317,7 +317,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6T2YLG38V5;
+				DEVELOPMENT_TEAM = GEZQXQPAD3;
 				INFOPLIST_FILE = "$(SRCROOT)/VITA'App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
