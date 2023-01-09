@@ -61,6 +61,24 @@ class ViewController: UIViewController {
     }
     
     
+    private func saveImage(_ image: UIImage) {
+        // Save picture in local file system
+        guard let png = image.pngData() else {
+            print("Error: Could not get png data of image")
+            return
+        }
+        // guard let dir = getSaveDirectory() else { return }
+        do {
+            let dir = getSaveDirectory()
+            let path = dir.appendingPathComponent("cropped.png") // appendingPathComponent is deprecated!
+            try png.write(to: path)
+            print("Picture saved successfully")
+        }
+        catch {
+            print("Error: could not save picture. \(error)")
+        }
+    }
+    
     private func processImage(_ image: UIImage) {
         guard let cgImage = image.cgImage else { return }
 
@@ -80,13 +98,49 @@ class ViewController: UIViewController {
         ocrRequest = VNRecognizeTextRequest { (request, error) in
             guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
         
-            var ocrText = ""
+            // Output detected text in JSON string
+            /* format:
+            [
+                {
+                    text: String,
+                    bbox: {
+                        bottomLeft:  [Double, Double],
+                        bottomRight: [Double, Double],
+                        topleft:     [Double, Double],
+                        topRight:    [Double, Double]
+                    }
+                 }
+            ]
+            */
+            var ocrText = "["
             for observation in observations {
                 guard let topCandidate = observation.topCandidates(1).first else { return }
                 
-                ocrText += topCandidate.string + "\n"
+                ocrText += "{\"text\": \"\(topCandidate.string)\", "
+                // create range for bounding box detection
+                let startIndex = topCandidate.string.startIndex
+                let endIndex = topCandidate.string.index(startIndex, offsetBy: 1)
+                let range = startIndex ..< endIndex
                 
+                ocrText += "\"bbox\": {"
+                do {
+                    let bbox: VNRectangleObservation = try topCandidate.boundingBox(for: range)!
+                    
+                    func jsonFromCGPoint(point: CGPoint, jsonKey: String) -> String {
+                        return "\"\(jsonKey)\": [\(point.x), \(point.y)]"
+                    }
+                    
+                    ocrText += jsonFromCGPoint(point: bbox.bottomLeft,  jsonKey: "bottomLeft")  + ", "
+                    ocrText += jsonFromCGPoint(point: bbox.bottomRight, jsonKey: "bottomRight") + ", "
+                    ocrText += jsonFromCGPoint(point: bbox.topLeft,     jsonKey: "topLeft")     + ", "
+                    ocrText += jsonFromCGPoint(point: bbox.topRight,    jsonKey: "topRight")
+                } catch {} // Cannot get bounding box
+                ocrText += "}},\n"
             }
+            
+            // remove trailing comma
+            ocrText.remove(at: ocrText.index(ocrText.endIndex, offsetBy: -2))
+            ocrText += "]"
             
             
             DispatchQueue.main.async {
@@ -95,21 +149,15 @@ class ViewController: UIViewController {
                 //print(ocrText)
                 
                 // Saving detected text into file text in local file system
-                // begin
-                
-                if let dir = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true).first {
-                    //This gives you the string formed path
-                    
-                    do{
-                        try ocrText.write(toFile: "\(dir)/DetectedText.txt", atomically: true, encoding: String.Encoding.utf8)
-                        print(dir)
-                        print("Successful - file written")
-                    }
-                    catch _{
-                        print("Error")
-                    }
+                do{
+                    let dir = try String(contentsOf: getSaveDirectory())
+                    try ocrText.write(toFile: "\(dir)/detectedText.json", atomically: true, encoding: String.Encoding.utf8)
+                    print(dir)
+                    print("File successfully written")
                 }
-                // end
+                catch {
+                    print("Error: \(error)")
+                }
             }
         }
         
@@ -127,8 +175,10 @@ extension ViewController: VNDocumentCameraViewControllerDelegate {
             return
         }
         
-        scanImageView.image = scan.imageOfPage(at: 0)
-        processImage(scan.imageOfPage(at: 0))
+        let image = scan.imageOfPage(at: 0)
+        scanImageView.image = image
+        saveImage(image)
+        processImage(image)
         controller.dismiss(animated: true)
     }
     
@@ -140,5 +190,10 @@ extension ViewController: VNDocumentCameraViewControllerDelegate {
     func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
         controller.dismiss(animated: true)
     }
+}
+
+
+func getSaveDirectory() -> URL {
+    return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 }
 
