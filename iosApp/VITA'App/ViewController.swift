@@ -70,7 +70,7 @@ class ViewController: UIViewController {
         
         do {
             let dir = getSaveDirectory()
-            let path = dir.appendingPathComponent("cropped.png") // appendingPathComponent is deprecated!
+            let path = dir.appendingPathComponent("cropped.png", isDirectory: false)
             try png.write(to: path)
             print("Picture saved successfully")
         }
@@ -134,7 +134,7 @@ class ViewController: UIViewController {
                 
                 // Saving detected text into file text in local file system
                 let dir = getSaveDirectory()
-                let path = dir.appendingPathComponent("detectedText.json") // appendingPathComponent is deprecated!
+                let path = dir.appendingPathComponent("detectedText.json", isDirectory: false)
                 exportJson(data: allDetected, to: path)
             }
         }
