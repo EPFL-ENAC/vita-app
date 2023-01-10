@@ -129,10 +129,10 @@ class ViewController: UIViewController {
                 do {
                     let bbox: VNRectangleObservation = try topCandidate.boundingBox(for: range)!
                     
-                    detectedText.bbox.bottomLeft  = [bbox.bottomLeft.x,  bbox.bottomLeft.y]
-                    detectedText.bbox.bottomRight = [bbox.bottomRight.x, bbox.bottomRight.y]
-                    detectedText.bbox.topLeft     = [bbox.topLeft.x,     bbox.topLeft.y]
-                    detectedText.bbox.topRight    = [bbox.topRight.x,    bbox.topRight.y]
+                    detectedText.bbox.bottomLeft  = Point(x: bbox.bottomLeft.x,  y: bbox.bottomLeft.y)
+                    detectedText.bbox.bottomRight = Point(x: bbox.bottomRight.x, y: bbox.bottomRight.y)
+                    detectedText.bbox.topLeft     = Point(x: bbox.topLeft.x,     y: bbox.topLeft.y)
+                    detectedText.bbox.topRight    = Point(x: bbox.topRight.x,    y: bbox.topRight.y)
                 } catch {} // Cannot get bounding box
                 
                 allDetected.append(detectedText)

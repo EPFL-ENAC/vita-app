@@ -9,11 +9,17 @@
 import Foundation
 
 
+struct Point: Codable {
+    var x: Double = 0
+    var y: Double = 0
+}
+
+
 struct Bbox: Codable {
-    var bottomLeft:  [Double] = []
-    var bottomRight: [Double] = []
-    var topLeft:     [Double] = []
-    var topRight:    [Double] = []
+    var bottomLeft:  Point = Point()
+    var bottomRight: Point = Point()
+    var topLeft:     Point = Point()
+    var topRight:    Point = Point()
 }
 
 
