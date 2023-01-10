@@ -16,6 +16,7 @@
 		946DD2B52407F9AD00D1C793 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 946DD2B32407F9AD00D1C793 /* Main.storyboard */; };
 		946DD2B72407F9AF00D1C793 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 946DD2B62407F9AF00D1C793 /* Assets.xcassets */; };
 		946DD2BA2407F9AF00D1C793 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 946DD2B82407F9AF00D1C793 /* LaunchScreen.storyboard */; };
+		F9CF3EED296D5EDD005AB9A9 /* JsonExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CF3EEC296D5EDD005AB9A9 /* JsonExport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		946DD2B62407F9AF00D1C793 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		946DD2B92407F9AF00D1C793 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		946DD2BB2407F9AF00D1C793 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F9CF3EEC296D5EDD005AB9A9 /* JsonExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonExport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		946DD2AC2407F9AD00D1C793 /* VITA'App */ = {
 			isa = PBXGroup;
 			children = (
+				F9CF3EEC296D5EDD005AB9A9 /* JsonExport.swift */,
 				946DD2AD2407F9AD00D1C793 /* AppDelegate.swift */,
 				946DD2AF2407F9AD00D1C793 /* SceneDelegate.swift */,
 				946DD2B12407F9AD00D1C793 /* ViewController.swift */,
@@ -152,6 +155,7 @@
 				9450C651240E37E70003884C /* ScanImageView.swift in Sources */,
 				946DD2AE2407F9AD00D1C793 /* AppDelegate.swift in Sources */,
 				9457847C241298B3008A43CF /* OcrTextView.swift in Sources */,
+				F9CF3EED296D5EDD005AB9A9 /* JsonExport.swift in Sources */,
 				946DD2B02407F9AD00D1C793 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
