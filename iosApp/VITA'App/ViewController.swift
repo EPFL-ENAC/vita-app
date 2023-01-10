@@ -98,21 +98,9 @@ class ViewController: UIViewController {
         ocrRequest = VNRecognizeTextRequest { (request, error) in
             guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
         
-            // Output detected text in JSON string
-            /* format:
-            [
-                {
-                    text: String,
-                    bbox: {
-                        bottomLeft:  [Double, Double],
-                        bottomRight: [Double, Double],
-                        topleft:     [Double, Double],
-                        topRight:    [Double, Double]
-                    }
-                 }
-            ]
-            */
+            // Text shown in interface
             var ocrText = ""
+            // Data to be exported
             var allDetected: [DetectedText] = []
             
             for observation in observations {
@@ -121,9 +109,9 @@ class ViewController: UIViewController {
                 ocrText += topCandidate.string + "\n"
                 var detectedText = DetectedText(text: topCandidate.string)
                 
-                // create range for bounding box detection
+                // Create range for bounding box detection
                 let startIndex = topCandidate.string.startIndex
-                let endIndex = topCandidate.string.index(startIndex, offsetBy: 1)
+                let endIndex = topCandidate.string.endIndex
                 let range = startIndex ..< endIndex
                 
                 do {
@@ -133,7 +121,9 @@ class ViewController: UIViewController {
                     detectedText.bbox.bottomRight = Point(x: bbox.bottomRight.x, y: bbox.bottomRight.y)
                     detectedText.bbox.topLeft     = Point(x: bbox.topLeft.x,     y: bbox.topLeft.y)
                     detectedText.bbox.topRight    = Point(x: bbox.topRight.x,    y: bbox.topRight.y)
-                } catch {} // Cannot get bounding box
+                } catch {
+                    print("Could not retrieve bounding box for text \(topCandidate.string)")
+                } // Cannot get bounding box
                 
                 allDetected.append(detectedText)
             }
