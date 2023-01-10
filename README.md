@@ -28,6 +28,13 @@ pip install -r requirements.txt
 
 Put `detectedText.json` and `cropped.png` in `analysis/inputs`.
 
+## Running
+
+```
+cd analysis
+python3 structuredOutput.py
+```
+
 
 # Supported document layouts
 
