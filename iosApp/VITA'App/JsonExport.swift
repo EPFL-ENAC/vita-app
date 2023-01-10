@@ -30,13 +30,27 @@ struct DetectedText: Codable {
 
 
 func exportJson(data: [DetectedText], to: URL) {
+    /* Output detected text in JSON string
+    format:
+    [
+        {
+            text: String,
+            bbox: {
+                bottomLeft:  {x: Double, y: Double},
+                bottomRight: {x: Double, y: Double},
+                topleft:     {x: Double, y: Double},
+                topRight:    {x: Double, y: Double}
+            }
+         },
+    ]
+    */
     do {
         let jsonEncoder = JSONEncoder()
         let jsonData = try jsonEncoder.encode(data)
         let jsonString = String(data: jsonData, encoding: .utf8)!
         let path = to.path
         try jsonString.write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
-        print("File successfully written")
+        print("File written successfully")
     } catch {
         print("Error exporting JSON: \(error)")
     }
