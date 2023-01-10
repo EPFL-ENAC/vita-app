@@ -67,7 +67,7 @@ class ViewController: UIViewController {
             print("Error: Could not get png data of image")
             return
         }
-        // guard let dir = getSaveDirectory() else { return }
+        
         do {
             let dir = getSaveDirectory()
             let path = dir.appendingPathComponent("cropped.png") // appendingPathComponent is deprecated!
@@ -112,52 +112,40 @@ class ViewController: UIViewController {
                  }
             ]
             */
-            var ocrText = "["
+            var ocrText = ""
+            var allDetected: [DetectedText] = []
+            
             for observation in observations {
                 guard let topCandidate = observation.topCandidates(1).first else { return }
                 
-                ocrText += "{\"text\": \"\(topCandidate.string)\", "
+                ocrText += topCandidate.string + "\n"
+                var detectedText = DetectedText(text: topCandidate.string)
+                
                 // create range for bounding box detection
                 let startIndex = topCandidate.string.startIndex
                 let endIndex = topCandidate.string.index(startIndex, offsetBy: 1)
                 let range = startIndex ..< endIndex
                 
-                ocrText += "\"bbox\": {"
                 do {
                     let bbox: VNRectangleObservation = try topCandidate.boundingBox(for: range)!
                     
-                    func jsonFromCGPoint(point: CGPoint, jsonKey: String) -> String {
-                        return "\"\(jsonKey)\": [\(point.x), \(point.y)]"
-                    }
-                    
-                    ocrText += jsonFromCGPoint(point: bbox.bottomLeft,  jsonKey: "bottomLeft")  + ", "
-                    ocrText += jsonFromCGPoint(point: bbox.bottomRight, jsonKey: "bottomRight") + ", "
-                    ocrText += jsonFromCGPoint(point: bbox.topLeft,     jsonKey: "topLeft")     + ", "
-                    ocrText += jsonFromCGPoint(point: bbox.topRight,    jsonKey: "topRight")
+                    detectedText.bbox.bottomLeft  = [bbox.bottomLeft.x,  bbox.bottomLeft.y]
+                    detectedText.bbox.bottomRight = [bbox.bottomRight.x, bbox.bottomRight.y]
+                    detectedText.bbox.topLeft     = [bbox.topLeft.x,     bbox.topLeft.y]
+                    detectedText.bbox.topRight    = [bbox.topRight.x,    bbox.topRight.y]
                 } catch {} // Cannot get bounding box
-                ocrText += "}},\n"
+                
+                allDetected.append(detectedText)
             }
-            
-            // remove trailing comma
-            ocrText.remove(at: ocrText.index(ocrText.endIndex, offsetBy: -2))
-            ocrText += "]"
-            
             
             DispatchQueue.main.async {
                 self.ocrTextView.text = ocrText
                 self.scanButton.isEnabled = true
-                //print(ocrText)
                 
                 // Saving detected text into file text in local file system
-                do{
-                    let dir = try String(contentsOf: getSaveDirectory())
-                    try ocrText.write(toFile: "\(dir)/detectedText.json", atomically: true, encoding: String.Encoding.utf8)
-                    print(dir)
-                    print("File successfully written")
-                }
-                catch {
-                    print("Error: \(error)")
-                }
+                let dir = getSaveDirectory()
+                let path = dir.appendingPathComponent("detectedText.json") // appendingPathComponent is deprecated!
+                exportJson(data: allDetected, to: path)
             }
         }
         
