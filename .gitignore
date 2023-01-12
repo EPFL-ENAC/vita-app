@@ -1,6 +1,7 @@
-.DS_Store
-node_modules
 analysis/inputs
+.DS_Store
+env
+node_modules
 
 
 # Xcode

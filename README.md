@@ -20,6 +20,12 @@ The analysis of the OCR text is performed by the script `analysis/structuredOutp
 
 ## Installation
 
+_Recommended:_ Setup a virtual Python environment:
+```
+python3 -m venv env
+source env/bin/activate
+```
+Install required packages:
 ```
 pip install -r requirements.txt
 ```
