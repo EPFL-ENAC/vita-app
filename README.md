@@ -41,8 +41,14 @@ cd analysis
 python3 structuredOutput.py
 ```
 
+## Testing installation
+```
+cd analysis
+pytest
+```
+
 
 # Supported document layouts
 
-_To be added_
+Alcon EX500
 
