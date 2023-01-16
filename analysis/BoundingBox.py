@@ -7,7 +7,7 @@ class BoundingBox:
         topLeft (Point)
         topRight (Point)
     """
-    
+
     def __init__(self, bottomLeft, bottomRight, topLeft, topRight):
         self.bottomLeft = bottomLeft
         self.bottomRight = bottomRight
@@ -20,7 +20,7 @@ class BoundingBox:
         return [self.bottomLeft, self.bottomRight, self.topRight, self.topLeft]
 
     def getBarycenter(self):
-        center = Point(0., 0.)
+        center = Point(0.0, 0.0)
 
         for p in self.points:
             center.x += p.x
@@ -37,10 +37,14 @@ class BoundingBox:
         Note: Assumes that boxes are rectangular and not rotated, to simplify
         computation.
         """
-        if point.x < self.bottomLeft.x: return False
-        if point.y < self.bottomLeft.y: return False
-        if point.x > self.topRight.x: return False
-        if point.y > self.topRight.y: return False
+        if point.x < self.bottomLeft.x:
+            return False
+        if point.y < self.bottomLeft.y:
+            return False
+        if point.x > self.topRight.x:
+            return False
+        if point.y > self.topRight.y:
+            return False
         return True
 
     def copy(self):
@@ -48,7 +52,7 @@ class BoundingBox:
             self.bottomLeft.copy(),
             self.bottomRight.copy(),
             self.topLeft.copy(),
-            self.topRight.copy()
+            self.topRight.copy(),
         )
 
     @staticmethod
@@ -65,10 +69,7 @@ class BoundingBox:
     def fromBounds(xmin, xmax, ymin, ymax):
         """Creates new instance from coordinates"""
         return BoundingBox(
-            Point(xmin, ymin),
-            Point(xmax, ymin),
-            Point(xmin, ymax),
-            Point(xmax, ymax)
+            Point(xmin, ymin), Point(xmax, ymin), Point(xmin, ymax), Point(xmax, ymax)
         )
 
 

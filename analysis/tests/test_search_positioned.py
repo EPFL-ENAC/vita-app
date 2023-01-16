@@ -1,4 +1,5 @@
 import sys
+
 sys.path.insert(0, ".")
 
 import regex
@@ -10,11 +11,11 @@ from BoundingBox import BoundingBox
 pattern1 = "abcde"
 pattern2 = "fghij"
 
-reference   = DetectedText(pattern1, BoundingBox.fromBounds(0, 1, 1, 2))
-topRight    = DetectedText(pattern2, BoundingBox.fromBounds(1, 2, 2, 3))
-right       = DetectedText(pattern2, BoundingBox.fromBounds(1, 2, 1, 2))
+reference = DetectedText(pattern1, BoundingBox.fromBounds(0, 1, 1, 2))
+topRight = DetectedText(pattern2, BoundingBox.fromBounds(1, 2, 2, 3))
+right = DetectedText(pattern2, BoundingBox.fromBounds(1, 2, 1, 2))
 bottomRight = DetectedText(pattern2, BoundingBox.fromBounds(1, 2, 0, 1))
-below       = DetectedText(pattern2, BoundingBox.fromBounds(0, 1, 0, 1))
+below = DetectedText(pattern2, BoundingBox.fromBounds(0, 1, 0, 1))
 
 detectedTextList = [reference, topRight, right, bottomRight, below]
 

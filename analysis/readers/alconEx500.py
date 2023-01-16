@@ -16,18 +16,21 @@ def read(detectedTextList):
     # Name
     # Birth date
     # Eye (OS/OD)
-    c = search.string(detectedTextList, "O[SD]", BoundingBox.fromBounds(0.2, 0.7, 0.7, 1))
+    c = search.string(
+        detectedTextList, "O[SD]", BoundingBox.fromBounds(0.2, 0.7, 0.7, 1)
+    )
     if len(c) != 0:
-        data.append({ "eye": c[0].regexMatch.captures()[0] })
+        data.append({"eye": c[0].regexMatch.captures()[0]})
 
     # Gender
     # Treatment date
-    c = search.string(detectedTextList, "Treatment date", BoundingBox.fromBounds(0.5, 1, 0.7, 1))
+    c = search.string(
+        detectedTextList, "Treatment date", BoundingBox.fromBounds(0.5, 1, 0.7, 1)
+    )
     if len(c) != 0:
         c = search.stringOnRight(c[0], detectedTextList, dateTimePattern, 10)
         if c is not None:
-            data.append({ "Treatment date": c.regexMatch.captures()[0] })
-
+            data.append({"Treatment date": c.regexMatch.captures()[0]})
 
     print(data)
 
