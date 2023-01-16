@@ -61,6 +61,16 @@ class BoundingBox:
             Point.fromData(data["topRight"]),
         )
 
+    @staticmethod
+    def fromBounds(xmin, xmax, ymin, ymax):
+        """Creates new instance from coordinates"""
+        return BoundingBox(
+            Point(xmin, ymin),
+            Point(xmax, ymin),
+            Point(xmin, ymax),
+            Point(xmax, ymax)
+        )
+
 
 class Point:
     def __init__(self, x, y):
