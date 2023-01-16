@@ -7,7 +7,11 @@ from readers import search
 def testSubstitution():
     pattern = "abcde"
     string = "x abyde x"
-    errors, startIndex, endIndex = search.fuzzySearch(pattern, string, 1)
+    errors, regexMatch = search.fuzzySearch(pattern, string, 1)
+
+    assert regexMatch is not None
+    startIndex, endIndex = regexMatch.span()
+
     assert errors == 1
     assert startIndex == 2
     assert endIndex == 7
@@ -16,7 +20,11 @@ def testSubstitution():
 def testInsertion():
     pattern = "abcde"
     string = "x abcyde x"
-    errors, startIndex, endIndex = search.fuzzySearch(pattern, string, 1)
+    errors, regexMatch = search.fuzzySearch(pattern, string, 1)
+
+    assert regexMatch is not None
+    startIndex, endIndex = regexMatch.span()
+
     assert errors == 1
     assert startIndex == 2
     assert endIndex == 8
@@ -25,7 +33,11 @@ def testInsertion():
 def testDeletion():
     pattern = "abcde"
     string = "x abde x"
-    errors, startIndex, endIndex = search.fuzzySearch(pattern, string, 1)
+    errors, regexMatch = search.fuzzySearch(pattern, string, 1)
+
+    assert regexMatch is not None
+    startIndex, endIndex = regexMatch.span()
+
     assert errors == 1
     assert startIndex == 2
     assert endIndex == 6

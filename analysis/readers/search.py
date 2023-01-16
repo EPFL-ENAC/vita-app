@@ -12,33 +12,30 @@ def fuzzySearch(pattern, string, errorMax):
 
     Returns:
         errors (int | None): None if no match
-        startIndex (int)
-        endIndex (int): excluded
+        regexMatch (Match)
     """
     regexPattern = f"({pattern}){{e<={errorMax}}}"
     match = regex.search(regexPattern, string, regex.BESTMATCH)
 
     if match is None:
-        return None, 0, 0
+        return None, None
 
     # match.fuzzy_counts: (n_substitutions, n_insertions, n_deletes)
     errors = sum(match.fuzzy_counts)
-    startIndex, endIndex = match.span()
 
-    return errors, startIndex, endIndex
+    return errors, match
 
 
 class Candidate:
-    """Container for DetectedText instance and fuzzySearch reasult"""
+    """Container for DetectedText instance and fuzzySearch result"""
 
-    def __init__(self, detectedText, errors, startIndex, endIndex):
+    def __init__(self, detectedText, errors, regexMatch):
         self.detectedText = detectedText
         self.errors = errors
-        self.startIndex = startIndex
-        self.endIndex = endIndex
+        self.regexMatch = regexMatch
 
 
-def string(detectedTextList, pattern, nCandidates=1, region=None):
+def string(detectedTextList, pattern, region=None, nCandidates=1):
     """Searches for a string in all provided detected texts
 
     Args
@@ -60,13 +57,14 @@ def string(detectedTextList, pattern, nCandidates=1, region=None):
             center = detectedText.bbox.getBarycenter()
             if not region.contains(center): continue
 
-        error, startIndex, endIndex = fuzzySearch(
+        error, regexMatch = fuzzySearch(
             pattern, detectedText.text, config.ERROR_MAX
         )
 
         if error is None:
             continue
-        candidates.append(Candidate(detectedText, error, startIndex, endIndex))
+
+        candidates.append(Candidate(detectedText, error, regexMatch))
 
     candidates.sort(key=lambda c: c.errors)
     return candidates[:nCandidates]
@@ -95,7 +93,7 @@ def stringOnRight(reference, detectedTextList, pattern, regionWidth=0):
     region.bottomRight.x += addedWidth
     region.topRight.x += addedWidth
 
-    candidates = string(detectedTextList, pattern, region=region)
+    candidates = string(detectedTextList, pattern, region)
     return candidates[0] if len(candidates) != 0 else None
 
 
@@ -119,5 +117,5 @@ def stringBelow(reference, detectedTextList, pattern):
     for p in region.points:
         p.y -= reference.lineHeight
 
-    candidates = string(detectedTextList, pattern, region=region)
+    candidates = string(detectedTextList, pattern, region)
     return candidates[0] if len(candidates) != 0 else None
