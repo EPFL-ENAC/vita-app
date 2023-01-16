@@ -3,9 +3,6 @@
 from PIL import Image, ImageDraw, ImageFont
 
 
-POINT_NAMES = ["bottomLeft", "bottomRight", "topRight", "topLeft"]
-
-
 # Define text style
 fontPath = "ressources/Roboto-Regular.ttf"
 textColor = (0, 0, 0)  # black
@@ -40,7 +37,7 @@ def generate(picturePath, detectedTextList):
         points = [toPixels(p, im) for p in detectedText.points]
         textPos = points[3]  # topLeft
 
-        fontSize = round(points[0][1] - points[3][1])  # height if bbox, in pixels
+        fontSize = round(detectedText.lineHeight * im.height)  # height if bbox, in pixels
         if fontSize < 0:
             fontSize = 0
         font = ImageFont.truetype(fontPath, fontSize)

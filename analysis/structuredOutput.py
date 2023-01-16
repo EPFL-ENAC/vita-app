@@ -14,4 +14,4 @@ if len(candidates) != 1:
 
 data, filteredDetectedText = alconEx500.read(allDetectedText)
 
-# image.generate("inputs/cropped.png", filteredDetectedText)
+image.generate("inputs/cropped.png", filteredDetectedText)

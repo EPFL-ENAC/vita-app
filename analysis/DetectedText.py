@@ -1,4 +1,5 @@
 import json
+from BoundingBox import BoundingBox, Point
 
 
 class DetectedText:
@@ -6,32 +7,30 @@ class DetectedText:
 
     Args:
         text (string)
-        bottomLeft (Point)
-        bottomRight (Point)
-        topLeft (Point)
-        topRight (Point)
+        bbox (BoundingBox)
     """
 
-    def __init__(self, text, bottomLeft, bottomRight, topLeft, topRight):
+    def __init__(self, text, bbox):
         self.text = text
-        self.bottomLeft = bottomLeft
-        self.bottomRight = bottomRight
-        self.topLeft = topLeft
-        self.topRight = topRight
+        self.bbox = bbox
 
     @property
     def points(self):
         """Return list of points ordered to draw a bounding box"""
-        return [self.bottomLeft, self.bottomRight, self.topRight, self.topLeft]
+        return self.bbox.points
 
+    @property
+    def lineHeight(self):
+        """Returns the bounding box height in 0 to 1 range"""
+        return self.bbox.topLeft.y - self.bbox.bottomLeft.y
 
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def toTuple(self):
-        return (self.x, self.y)
+    @staticmethod
+    def fromData(data):
+        """Creates new instance from dictionnary"""
+        return DetectedText(
+            data["text"],
+            BoundingBox.fromData(data["bbox"])
+        )
 
 
 def pointFromData(data):
@@ -47,15 +46,6 @@ def fromFile(filename):
     allDetectedText = []
 
     for d in data:
-        bbox = d["bbox"]
-        allDetectedText.append(
-            DetectedText(
-                d["text"],
-                pointFromData(bbox["bottomLeft"]),
-                pointFromData(bbox["bottomRight"]),
-                pointFromData(bbox["topLeft"]),
-                pointFromData(bbox["topRight"]),
-            )
-        )
+        allDetectedText.append(DetectedText.fromData(d))
 
     return allDetectedText
