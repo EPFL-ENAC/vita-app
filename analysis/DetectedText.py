@@ -33,10 +33,6 @@ class DetectedText:
         )
 
 
-def pointFromData(data):
-    return Point(data["x"], data["y"])
-
-
 def fromFile(filename):
     # Read JSON input
     f = open(filename)
