@@ -1,9 +1,10 @@
 import sys
 sys.path.insert(0, ".")
 
+import regex
 from readers import search
 from DetectedText import DetectedText
-from BoundingBox import BoundingBox, Point
+from BoundingBox import BoundingBox
 
 
 pattern1 = "abcde"
@@ -17,11 +18,16 @@ below       = DetectedText(pattern2, BoundingBox.fromBounds(0, 1, 0, 1))
 
 detectedTextList = [reference, topRight, right, bottomRight, below]
 
+dummyMatch = regex.match("", "")
+reference = search.Candidate(reference, 0, dummyMatch)
+
 
 def testStringOnSame():
     candidate = search.stringOnRight(reference, detectedTextList, pattern1, 1)
     assert candidate is not None
-    assert candidate.detectedText is reference
+    assert candidate.detectedText.text == reference.detectedText.text
+    # detectedText themselves are different because candidate.detextedText is
+    # rewritten in search.stringOnRight
 
 
 def testStringOnRight():
