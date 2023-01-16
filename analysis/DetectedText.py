@@ -1,5 +1,5 @@
 import json
-from BoundingBox import BoundingBox, Point
+from BoundingBox import BoundingBox
 
 
 class DetectedText:

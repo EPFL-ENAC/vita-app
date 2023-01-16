@@ -43,6 +43,13 @@ class BoundingBox:
         if point.y > self.topRight.y: return False
         return True
 
+    def copy(self):
+        return BoundingBox(
+            self.bottomLeft.copy(),
+            self.bottomRight.copy(),
+            self.topLeft.copy(),
+            self.topRight.copy()
+        )
 
     @staticmethod
     def fromData(data):
@@ -62,6 +69,9 @@ class Point:
 
     def toTuple(self):
         return (self.x, self.y)
+
+    def copy(self):
+        return Point(self.x, self.y)
 
     @staticmethod
     def fromData(data):
