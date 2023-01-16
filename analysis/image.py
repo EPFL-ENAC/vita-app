@@ -37,7 +37,9 @@ def generate(picturePath, detectedTextList):
         points = [toPixels(p, im) for p in detectedText.points]
         textPos = points[3]  # topLeft
 
-        fontSize = round(detectedText.lineHeight * im.height)  # height if bbox, in pixels
+        fontSize = round(
+            detectedText.lineHeight * im.height
+        )  # height if bbox, in pixels
         if fontSize < 0:
             fontSize = 0
         font = ImageFont.truetype(fontPath, fontSize)

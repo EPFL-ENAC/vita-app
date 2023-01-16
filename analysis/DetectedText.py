@@ -25,18 +25,12 @@ class DetectedText:
         return self.bbox.topLeft.y - self.bbox.bottomLeft.y
 
     def copy(self):
-        return DetectedText(
-            self.text,
-            self.bbox.copy()
-        )
+        return DetectedText(self.text, self.bbox.copy())
 
     @staticmethod
     def fromData(data):
         """Creates new instance from dictionnary"""
-        return DetectedText(
-            data["text"],
-            BoundingBox.fromData(data["bbox"])
-        )
+        return DetectedText(data["text"], BoundingBox.fromData(data["bbox"]))
 
 
 def fromFile(filename):

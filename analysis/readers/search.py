@@ -55,11 +55,10 @@ def string(detectedTextList, pattern, region=None, nCandidates=1):
     for detectedText in detectedTextList:
         if region is not None:
             center = detectedText.bbox.getBarycenter()
-            if not region.contains(center): continue
+            if not region.contains(center):
+                continue
 
-        error, regexMatch = fuzzySearch(
-            pattern, detectedText.text, config.ERROR_MAX
-        )
+        error, regexMatch = fuzzySearch(pattern, detectedText.text, config.ERROR_MAX)
 
         if error is None:
             continue
@@ -97,10 +96,10 @@ def stringOnRight(reference, detectedTextList, pattern, regionWidth=0):
     # text, which may contain a match before refEndIndex.
     # Example: reference text is "unwanted-value key: value", we should
     # prevent "unwanted-value" from matching.
-    detectedTextList = detectedTextList.copy() # don't mutate original list
+    detectedTextList = detectedTextList.copy()  # don't mutate original list
     detectedTextList.remove(reference.detectedText)
     cropped = reference.detectedText.copy()
-    cropped.text = cropped.text[reference.regexMatch.span()[1]:]
+    cropped.text = cropped.text[reference.regexMatch.span()[1] :]
     detectedTextList.append(cropped)
 
     candidates = string(detectedTextList, pattern, region)
