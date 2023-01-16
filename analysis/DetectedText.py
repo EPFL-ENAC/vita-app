@@ -24,6 +24,12 @@ class DetectedText:
         """Returns the bounding box height in 0 to 1 range"""
         return self.bbox.topLeft.y - self.bbox.bottomLeft.y
 
+    def copy(self):
+        return DetectedText(
+            self.text,
+            self.bbox.copy()
+        )
+
     @staticmethod
     def fromData(data):
         """Creates new instance from dictionnary"""

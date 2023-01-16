@@ -77,7 +77,7 @@ def stringOnRight(reference, detectedTextList, pattern, regionWidth=0):
     searched string is inside the reference.
 
     Args:
-        reference (detectedText)
+        reference (Candidate)
         detectedTextList ([detectedText])
         pattern (string): regex pattern
         regionWidth (float): width added to the reference bounding box where
@@ -88,10 +88,20 @@ def stringOnRight(reference, detectedTextList, pattern, regionWidth=0):
     """
 
     # Create searched region by expanding the reference's bounding box
-    region = reference.bbox.copy()
-    addedWidth = regionWidth * reference.lineHeight
+    region = reference.detectedText.bbox.copy()
+    addedWidth = regionWidth * reference.detectedText.lineHeight
     region.bottomRight.x += addedWidth
     region.topRight.x += addedWidth
+
+    # Build modified detectedTextList not containing the full "reference"
+    # text, which may contain a match before refEndIndex.
+    # Example: reference text is "unwanted-value key: value", we should
+    # prevent "unwanted-value" from matching.
+    detectedTextList = detectedTextList.copy() # don't mutate original list
+    detectedTextList.remove(reference.detectedText)
+    cropped = reference.detectedText.copy()
+    cropped.text = cropped.text[reference.regexMatch.span()[1]:]
+    detectedTextList.append(cropped)
 
     candidates = string(detectedTextList, pattern, region)
     return candidates[0] if len(candidates) != 0 else None
@@ -104,7 +114,7 @@ def stringBelow(reference, detectedTextList, pattern):
     lineHeight.
 
     Args:
-        reference (detectedText)
+        reference (Candidate)
         detectedTextList ([detectedText])
         pattern (string): regex pattern
 
@@ -113,9 +123,9 @@ def stringBelow(reference, detectedTextList, pattern):
     """
 
     # Create searched region by shifting the reference's bounding box down
-    region = reference.bbox.copy()
+    region = reference.detectedText.bbox.copy()
     for p in region.points:
-        p.y -= reference.lineHeight
+        p.y -= reference.detectedText.lineHeight
 
     candidates = string(detectedTextList, pattern, region)
     return candidates[0] if len(candidates) != 0 else None
