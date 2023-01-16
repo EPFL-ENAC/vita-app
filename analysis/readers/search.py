@@ -15,8 +15,8 @@ def fuzzySearch(pattern, string, errorMax):
         startIndex (int)
         endIndex (int): excluded
     """
-    rPattern = f"({pattern}){{e<={errorMax}}}"
-    match = regex.search(rPattern, string, regex.BESTMATCH)
+    regexPattern = f"({pattern}){{e<={errorMax}}}"
+    match = regex.search(regexPattern, string, regex.BESTMATCH)
 
     if match is None:
         return None, 0, 0
@@ -38,13 +38,15 @@ class Candidate:
         self.endIndex = endIndex
 
 
-def string(detectedTextList, pattern, nCandidates=1):
+def string(detectedTextList, pattern, nCandidates=1, region=None):
     """Searches for a string in all provided detected texts
 
     Args
         detectedTextList ([detectedText])
         pattert (string): regex pattern
         nCandidates (int): number of candidates to return
+        region (BoundingBox | None): check if candidate bounding box's center
+            is inside region
 
     Returns:
         candidates ([Candidates]): nCandidates first candidates matching the
@@ -54,6 +56,10 @@ def string(detectedTextList, pattern, nCandidates=1):
     candidates = []
 
     for detectedText in detectedTextList:
+        if region is not None:
+            center = detectedText.bbox.getBarycenter()
+            if not region.contains(center): continue
+
         error, startIndex, endIndex = fuzzySearch(
             pattern, detectedText.text, config.ERROR_MAX
         )
