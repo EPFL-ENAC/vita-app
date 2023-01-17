@@ -41,9 +41,9 @@ def string(detectedTextList, pattern, region=None, nCandidates=1):
     Args
         detectedTextList ([detectedText])
         pattern (string): regex pattern
-        nCandidates (int): number of candidates to return
         region (BoundingBox | None): check if candidate bounding box's center
             is inside region
+        nCandidates (int): number of candidates to return
 
     Returns:
         candidates ([Candidates]): nCandidates first candidates matching the
@@ -69,7 +69,8 @@ def string(detectedTextList, pattern, region=None, nCandidates=1):
     return candidates[:nCandidates]
 
 
-def stringOnRight(reference, detectedTextList, pattern, regionWidth=0):
+def stringOnRight(reference, detectedTextList, pattern, regionWidth=0,
+    nCandidates=1):
     """Searches for a string on the right of a reference
 
     The checked region includes the reference bounding box, in case the
@@ -81,9 +82,10 @@ def stringOnRight(reference, detectedTextList, pattern, regionWidth=0):
         pattern (string): regex pattern
         regionWidth (float): width added to the reference bounding box where
             text is searched. added width = reference.lineHeight * regionWidth
+        nCandidates (int): number of candidates to return
 
     Returns:
-        candidate
+        candidates ([Candidates]): nCandidates first candidates
     """
 
     # Create searched region by expanding the reference's bounding box
@@ -102,11 +104,10 @@ def stringOnRight(reference, detectedTextList, pattern, regionWidth=0):
     cropped.text = cropped.text[reference.regexMatch.span()[1] :]
     detectedTextList.append(cropped)
 
-    candidates = string(detectedTextList, pattern, region)
-    return candidates[0] if len(candidates) != 0 else None
+    return string(detectedTextList, pattern, region, nCandidates)
 
 
-def stringBelow(reference, detectedTextList, pattern):
+def stringBelow(reference, detectedTextList, pattern, nCandidates=1):
     """Searches for a string below a reference
 
     The checked region is the reference bounding box shifted down by one
@@ -116,9 +117,10 @@ def stringBelow(reference, detectedTextList, pattern):
         reference (Candidate)
         detectedTextList ([detectedText])
         pattern (string): regex pattern
+        nCandidates (int): number of candidates to return
 
     Returns:
-        candidate
+        candidates ([Candidates]): nCandidates first candidates
     """
 
     # Create searched region by shifting the reference's bounding box down
@@ -126,5 +128,4 @@ def stringBelow(reference, detectedTextList, pattern):
     for p in region.points:
         p.y -= reference.detectedText.lineHeight
 
-    candidates = string(detectedTextList, pattern, region)
-    return candidates[0] if len(candidates) != 0 else None
+    return string(detectedTextList, pattern, region)
