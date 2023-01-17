@@ -69,8 +69,7 @@ def string(detectedTextList, pattern, region=None, nCandidates=1):
     return candidates[:nCandidates]
 
 
-def stringOnRight(reference, detectedTextList, pattern, regionWidth=0,
-    nCandidates=1):
+def stringOnRight(reference, detectedTextList, pattern, regionWidth=0, nCandidates=1):
     """Searches for a string on the right of a reference
 
     The checked region includes the reference bounding box, in case the
