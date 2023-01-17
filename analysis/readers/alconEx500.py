@@ -7,8 +7,8 @@ from BoundingBox import BoundingBox
 distinctivePattern = "EX500.+Treatment Report"
 
 namePattern = r"([a-zA-z\- ]+)"
-datePattern = r"(\d{2}?\.\d{2}?\.\d{4}?)"
-timePattern = r"(\d{2}?:\d{2}?:\d{2}?)"
+datePattern = r"(\d{2}\.\d{2}\.\d{4})"
+timePattern = r"(\d{2}:\d{2}:\d{2})"
 dateTimePattern = f"{datePattern} {timePattern}"
 anglePattern = r"(\d{1,3}) °"
 
@@ -89,12 +89,12 @@ def read(detectedTextList):
 
     # Birth date
     data.extend(
-        searchDataRelative(
-            refs,
+        searchData(
             ["Birth date"],
-            search.stringBelow,
+            search.string,
             detectedTextList,
             datePattern,
+            BoundingBox.fromBounds(0.0, 0.5, 0.75, 1),
         )[0]
     )
 
@@ -106,7 +106,7 @@ def read(detectedTextList):
             ["Gender"],
             search.stringOnRight,
             detectedTextList,
-            r"[a-z]*",
+            r"[a-z]+",
             10,
         )[0]
     )
@@ -305,8 +305,6 @@ def read(detectedTextList):
             5,
         )[0]
     )
-
-    print(data)
 
     filteredDetectedText = detectedTextList
     return data, filteredDetectedText

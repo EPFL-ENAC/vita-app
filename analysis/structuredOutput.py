@@ -16,4 +16,5 @@ if len(candidates) != 1:
 data, filteredDetectedText = alconEx500.read(allDetectedText)
 csvWriter.write(data, "output.csv")
 
-# image.generate("inputs/cropped.png", filteredDetectedText)
+image.generate("inputs/cropped.png", filteredDetectedText)
+print(data)
