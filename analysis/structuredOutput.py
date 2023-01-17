@@ -1,6 +1,7 @@
 import DetectedText
 import image
 from readers import alconEx500, search
+import csvWriter
 
 
 # import from iOS output
@@ -13,5 +14,6 @@ if len(candidates) != 1:
     quit()
 
 data, filteredDetectedText = alconEx500.read(allDetectedText)
+csvWriter.write(data, "output.csv")
 
-image.generate("inputs/cropped.png", filteredDetectedText)
+# image.generate("inputs/cropped.png", filteredDetectedText)
