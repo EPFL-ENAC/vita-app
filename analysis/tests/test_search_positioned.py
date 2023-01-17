@@ -25,19 +25,19 @@ reference = search.Candidate(reference, 0, dummyMatch)
 
 def testStringOnSame():
     candidate = search.stringOnRight(reference, detectedTextList, pattern1, 1)
-    assert candidate is not None
-    assert candidate.detectedText.text == reference.detectedText.text
+    assert len(candidate) != 0
+    assert candidate[0].detectedText.text == reference.detectedText.text
     # detectedText themselves are different because candidate.detextedText is
     # rewritten in search.stringOnRight
 
 
 def testStringOnRight():
     candidate = search.stringOnRight(reference, detectedTextList, pattern2, 1)
-    assert candidate is not None
-    assert candidate.detectedText is right
+    assert len(candidate) != 0
+    assert candidate[0].detectedText is right
 
 
 def testStringBelow():
     candidate = search.stringBelow(reference, detectedTextList, pattern2)
-    assert candidate is not None
-    assert candidate.detectedText is below
+    assert len(candidate) != 0
+    assert candidate[0].detectedText is below
