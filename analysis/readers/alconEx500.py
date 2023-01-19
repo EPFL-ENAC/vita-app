@@ -1,310 +1,137 @@
-import regex
-import config
-from readers import search
+from readers.Reader import Reader
+from readers.Field import Field
+from readers import patterns
 from BoundingBox import BoundingBox
 
 
 distinctivePattern = "EX500.+Treatment Report"
 
-namePattern = r"([a-zA-z\- ]+)"
-datePattern = r"(\d{2}\.\d{2}\.\d{4})"
-timePattern = r"(\d{2}:\d{2}:\d{2})"
-dateTimePattern = f"{datePattern} {timePattern}"
-anglePattern = r"(\d{1,3}) °"
 
-shapeSpherePattern = r"([+-] \d+\.\d{2}) D"
-shapeCylinderPattern = shapeSpherePattern
-shapeAxisPattern = anglePattern
-shapePattern = f"{shapeSpherePattern} {shapeCylinderPattern} x {shapeAxisPattern}"
-
-lengthMmPattern = r"(\d+\.\d{2}) mm"
-lengthUmPattern = r"(\d{1,4}) [up]m"
-timeSPattern = r"(\d{1,3}) [sS]"
-
-KPattern = r"(\d+\.\d{2}) D"
-KAxisPattern = anglePattern
-QPattern = r"([+-]?\d+\.\d{2}|-+)"
-KQPattern = f"{KPattern} @ {KAxisPattern} / {QPattern}"
-
-
-def searchData(keys, searchFunc, *args, **kwargs):
-    newData = []
-    errors = config.ERROR_MAX
-
-    c = searchFunc(*args, **kwargs)
-
-    if len(c) != 0:
-        errors = c[0].errors
-
-        # Fuzzy search always capture the whole pattern -> 1st group
-        matches = list(c[0].regexMatch.groups())
-
-        if len(matches) > 1:  # Other groups captured, get rid of 1st (whole)
-            matches = matches[1:]
-
-    else:  # no match found
-        matches = [""] * len(keys)
-
-    # Populate newData
-    for i in range(len(keys)):
-        newData.append({keys[i]: matches[i]})
-
-    return newData, errors
-
-
-def searchDataRelative(references, keys, searchFunc, *args, **kwargs):
-    newData = [{key: ""} for key in keys]
-    errors = config.ERROR_MAX
-
-    if len(references) == 0:  # reference not found
-        return newData, errors
-
-    # Test all references to find which one leads to best match
-    bestNewData = newData
-    bestErrors = errors + 1
-
-    for reference in references:
-        newData, errors = searchData(keys, searchFunc, reference, *args, **kwargs)
-        if errors < bestErrors:
-            bestNewData = newData
-            bestErrors = errors
-
-    return bestNewData, bestErrors
-
-
-def read(detectedTextList):
-    data = []
-
-    # Name
-    refs = search.string(detectedTextList, distinctivePattern)
-    data.extend(
-        searchDataRelative(
-            refs,
+reader = Reader(
+    [
+        Field("title", distinctivePattern),
+        Field(
+            "name",
+            f"{patterns.name}, {patterns.name}",
             ["Last name", "First name"],
-            search.stringBelow,
-            detectedTextList,
-            f"{namePattern}, {namePattern}",
-        )[0]
-    )
-
-    # Birth date
-    data.extend(
-        searchData(
+            below="title",
+        ),
+        Field(
+            "birth date",
+            patterns.date,
             ["Birth date"],
-            search.string,
-            detectedTextList,
-            datePattern,
-            BoundingBox.fromBounds(0.0, 0.5, 0.75, 1),
-        )[0]
-    )
-
-    # Gender
-    refs = search.string(detectedTextList, "Gender")
-    data.extend(
-        searchDataRelative(
-            refs,
-            ["Gender"],
-            search.stringOnRight,
-            detectedTextList,
-            r"[a-z]+",
-            10,
-        )[0]
-    )
-
-    # Eye (OS/OD)
-    data.extend(
-        searchData(
-            ["eye"],
-            search.string,
-            detectedTextList,
-            "O[SD]",
-            BoundingBox.fromBounds(0.2, 0.7, 0.7, 1),
-        )[0]
-    )
-
-    # Treatment date
-    refs = search.string(
-        detectedTextList, "Treatment date", BoundingBox.fromBounds(0.5, 1, 0.7, 1)
-    )
-    data.extend(
-        searchDataRelative(
-            refs,
+            region=BoundingBox.fromBounds(0.0, 0.5, 0.75, 1),
+        ),
+        Field("gender key", "Gender"),
+        Field("gender", r"[a-z]+", ["Gender"], onRightof="gender key", regionWidth=10),
+        Field("eye", "O[SD]", ["Eye"], region=BoundingBox.fromBounds(0.2, 0.7, 0.7, 1)),
+        Field("treatment date key", "Treatment date"),
+        Field(
+            "treatment date",
+            patterns.dateTime,
             ["Treatment date (DD.MM.YYYY)", "Treatment time"],
-            search.stringOnRight,
-            detectedTextList,
-            dateTimePattern,
-            10,
-        )[0]
-    )
-
-    # Refraction
-    refs = search.string(detectedTextList, "Refraction")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="treatment date key",
+            regionWidth=10,
+        ),
+        Field("refraction key", "Refraction"),
+        Field(
+            "refraction",
+            patterns.shape,
             ["Refraction sphere", "Refraction cylinder", "Refraction axis"],
-            search.stringOnRight,
-            detectedTextList,
-            shapePattern,
-            20,
-        )[0]
-    )
-
-    # Treatment
-    refs = search.string(detectedTextList, "(Treatment|Correction)", nCandidates=5)
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="refraction key",
+            regionWidth=20,
+        ),
+        Field("treatment key", "(Treatment|Correction)", nCandidates=5),
+        Field(
+            "treatment",
+            patterns.shape,
             ["Treatment sphere", "Treatment cylinder", "Treatment axis"],
-            search.stringOnRight,
-            detectedTextList,
-            shapePattern,
-            20,
-        )[0]
-    )
-
-    # Optical zone
-    refs = search.string(detectedTextList, "Optical zone")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="treatment key",
+            regionWidth=20,
+        ),
+        Field("optical zone key", "Optical zone"),
+        Field(
+            "optical zone",
+            patterns.lengthMm,
             ["Optical zone"],
-            search.stringOnRight,
-            detectedTextList,
-            lengthMmPattern,
-            5,
-        )[0]
-    )
-
-    # Flap / Epi Thickness
-    refs = search.string(detectedTextList, "(Flap / Epi Thickness|Planned flap)")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="optical zone key",
+            regionWidth=5,
+        ),
+        Field("flap key", "(Flap / Epi Thickness|Planned flap)"),
+        Field(
+            "flap",
+            patterns.lengthUm,
             ["Flap / Epi thickness"],
-            search.stringOnRight,
-            detectedTextList,
-            lengthUmPattern,
-            5,
-        )[0]
-    )
-
-    # Transition zone
-    refs = search.string(detectedTextList, "Transition zone")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="flap key",
+            regionWidth=5,
+        ),
+        Field("transition zone key", "Transition zone"),
+        Field(
+            "transition zone",
+            patterns.lengthMm,
             ["Transition zone"],
-            search.stringOnRight,
-            detectedTextList,
-            lengthMmPattern,
-            5,
-        )[0]
-    )
-
-    # Cornea thickness
-    refs = search.string(detectedTextList, "Cornea thickness")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="transition zone key",
+            regionWidth=5,
+        ),
+        Field("cornea thickness key", "Cornea thickness"),
+        Field(
+            "cornea thickness",
+            patterns.lengthUm,
             ["Cornea thickness"],
-            search.stringOnRight,
-            detectedTextList,
-            lengthUmPattern,
-            5,
-        )[0]
-    )
-
-    # Ablation zone
-    refs = search.string(detectedTextList, "Ablation zone")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="cornea thickness key",
+            regionWidth=5,
+        ),
+        Field("ablation zone key", "Ablation zone"),
+        Field(
+            "ablation zone",
+            patterns.lengthMm,
             ["Ablation zone"],
-            search.stringOnRight,
-            detectedTextList,
-            lengthMmPattern,
-            5,
-        )[0]
-    )
-
-    # Residual stroma
-    refs = search.string(detectedTextList, "Residual stroma")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="ablation zone key",
+            regionWidth=5,
+        ),
+        Field("residual stroma key", "Residual stroma"),
+        Field(
+            "residual stroma",
+            patterns.lengthUm,
             ["Residual stroma"],
-            search.stringOnRight,
-            detectedTextList,
-            lengthUmPattern,
-            5,
-        )[0]
-    )
-
-    # Total duration
-    refs = search.string(detectedTextList, "Total duration")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="residual stroma key",
+            regionWidth=5,
+        ),
+        Field("total duration key", "Total duration"),
+        Field(
+            "total duration",
+            patterns.timeS,
             ["Total duration (s)"],
-            search.stringOnRight,
-            detectedTextList,
-            timeSPattern,
-            5,
-        )[0]
-    )
-
-    # Breaks
-    refs = search.string(detectedTextList, "Breaks")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="total duration key",
+            regionWidth=5,
+        ),
+        Field("breaks key", "Breaks"),
+        Field(
+            "breaks",
+            rf"\d+ \({patterns.timeS}\)",
             ["Breaks (s)"],
-            search.stringOnRight,
-            detectedTextList,
-            rf"\d+ \({timeSPattern}\)",
-            5,
-        )[0]
-    )
-
-    # K1 / Q1
-    refs = search.string(detectedTextList, "K1 / Q1")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="breaks key",
+            regionWidth=5,
+        ),
+        Field("k1q1 key", "K1 / Q1"),
+        Field(
+            "k1q1",
+            patterns.KQ,
             ["K1", "K1 axis", "Q1"],
-            search.stringOnRight,
-            detectedTextList,
-            KQPattern,
-            20,
-        )[0]
-    )
-
-    # K2 / Q2
-    refs = search.string(detectedTextList, "K2 / Q2")
-    data.extend(
-        searchDataRelative(
-            refs,
+            onRightof="k1q1 key",
+            regionWidth=20,
+        ),
+        Field("k2q2 key", "K2 / Q2"),
+        Field(
+            "k2q2",
+            patterns.KQ,
             ["K2", "K2 axis", "Q2"],
-            search.stringOnRight,
-            detectedTextList,
-            KQPattern,
-            20,
-        )[0]
-    )
-
-    # Pupil
-    refs = search.string(detectedTextList, "Pupil")
-    data.extend(
-        searchDataRelative(
-            refs,
-            ["Pupil"],
-            search.stringOnRight,
-            detectedTextList,
-            lengthMmPattern,
-            5,
-        )[0]
-    )
-
-    filteredDetectedText = detectedTextList
-    return data, filteredDetectedText
+            onRightof="k2q2 key",
+            regionWidth=20,
+        ),
+        Field("pupil key", "Pupil"),
+        Field(
+            "pupil", patterns.lengthMm, ["Pupil"], onRightof="pupil key", regionWidth=5
+        ),
+    ]
+)

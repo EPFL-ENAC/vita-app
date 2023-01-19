@@ -84,7 +84,8 @@ def stringOnRight(reference, detectedTextList, pattern, regionWidth=0, nCandidat
         nCandidates (int): number of candidates to return
 
     Returns:
-        candidates ([Candidates]): nCandidates first candidates
+        candidates ([Candidates]): nCandidates first candidates. May return
+            elements which are not originally in detectedTextList.
     """
 
     # Create searched region by expanding the reference's bounding box
