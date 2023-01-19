@@ -5,6 +5,11 @@ _Picture to Structured Text_
 Read an eye examination medical report using a mobile iOS device and extract the relevant data in a `.csv` file.
 
 
+# Supported document layouts
+
+Alcon EX500
+
+
 # iOS application (OCR)
 
 ## Development and usage
@@ -51,8 +56,7 @@ cd analysis
 pytest
 ```
 
+## Short documentation
 
-# Supported document layouts
-
-Alcon EX500
+`structuredOutput.py` is the entry point of the analysis. The OCR `.json` file is read to create a list of `DetectedText`, defined in `DetectedText.py`, with information on the read text and the bounding boxes. Then, data is extracted from this list using a specific reader (for example, look at a definition in `readers/alconEx500.py`). The reader rely on fuzzy string matching and relative positioning of bounding boxes (see `readers/search.py`).
 
