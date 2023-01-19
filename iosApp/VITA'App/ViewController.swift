@@ -70,7 +70,7 @@ class ViewController: UIViewController {
         
         do {
             let dir = getSaveDirectory()
-            let path = dir.appendingPathComponent("cropped.png", isDirectory: false)
+            let path = dir.appendingPathComponent("\(filename.get()).png", isDirectory: false)
             try png.write(to: path)
             print("Picture saved successfully")
         }
@@ -134,7 +134,7 @@ class ViewController: UIViewController {
                 
                 // Saving detected text into file text in local file system
                 let dir = getSaveDirectory()
-                let path = dir.appendingPathComponent("detectedText.json", isDirectory: false)
+                let path = dir.appendingPathComponent("\(filename.get()).json", isDirectory: false)
                 exportJson(data: allDetected, to: path)
             }
         }
@@ -153,10 +153,14 @@ extension ViewController: VNDocumentCameraViewControllerDelegate {
             return
         }
         
-        let image = scan.imageOfPage(at: 0)
-        scanImageView.image = image
-        saveImage(image)
-        processImage(image)
+        for i in 0 ..< scan.pageCount {
+            let image = scan.imageOfPage(at: i)
+            scanImageView.image = image
+            filename.generate()
+            saveImage(image)
+            processImage(image)
+        }
+        
         controller.dismiss(animated: true)
     }
     
@@ -169,9 +173,3 @@ extension ViewController: VNDocumentCameraViewControllerDelegate {
         controller.dismiss(animated: true)
     }
 }
-
-
-func getSaveDirectory() -> URL {
-    return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-}
-
