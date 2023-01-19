@@ -1,5 +1,5 @@
-analysis/inputs
-analysis/output.csv
+analysis/inputs/*
+analysis/outputs/*
 .DS_Store
 env
 node_modules
