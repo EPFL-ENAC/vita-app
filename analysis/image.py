@@ -11,6 +11,7 @@ textColor = (0, 0, 0)  # black
 fill = (255, 255, 255, 192)  # semi-transparent white
 lineWidth = 3
 outline = (192, 0, 0)  # dark red
+defaultFontSize = 12
 
 
 def toPixels(point, im):
@@ -36,16 +37,17 @@ def generate(picturePath, detectedTextList):
     for detectedText in detectedTextList:
         points = [toPixels(p, im) for p in detectedText.points]
         textPos = points[3]  # topLeft
+        # middle vertical ahchor
+        textPos = (textPos[0], textPos[1] + detectedText.lineHeight / 2 * im.height)
 
-        fontSize = round(
-            detectedText.lineHeight * im.height
-        )  # height if bbox, in pixels
-        if fontSize < 0:
-            fontSize = 0
+        # Compute font size to fit drawn text width in bounding box
+        font = ImageFont.truetype(fontPath, defaultFontSize)
+        width, _ = font.getsize(detectedText.text)
+        fontSize = round(defaultFontSize * detectedText.textWidth * im.width / width)
         font = ImageFont.truetype(fontPath, fontSize)
 
         draw.polygon(points, outline=outline, width=lineWidth, fill=fill)
-        draw.text(textPos, detectedText.text, fill=textColor, font=font)
+        draw.text(textPos, detectedText.text, fill=textColor, font=font, anchor="lm")
         print(detectedText.text)
 
     im.show()

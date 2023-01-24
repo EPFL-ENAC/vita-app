@@ -7,7 +7,7 @@ Read an eye examination medical report using a mobile iOS device and extract the
 
 # Supported document layouts
 
-Alcon EX500
+Alcon EX500, Sophtalmo
 
 
 # iOS application (OCR)
