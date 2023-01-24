@@ -41,18 +41,24 @@ pip install -r requirements.txt
 
 Put the OCR files `xxx.json` and `xxx.png` in `analysis/inputs`.
 
-## Running
+## Visualizing the OCR's output
 
 ```
 cd analysis
-python3 structuredOutput.py xxx
+python3 visualizeOcr.py inputs/xxx.json
+```
+
+## Running
+
+```
+python3 structuredOutput.py inputs/xxx.json
 ```
 
 An image displaying the found fields is shown and a `.csv` file is written in the `analysis/outputs` directory.
 
 ## Testing installation
+Run the following command from the `analysis` diretory:
 ```
-cd analysis
 pytest
 ```
 
