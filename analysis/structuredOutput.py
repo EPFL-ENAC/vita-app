@@ -28,4 +28,7 @@ csvWriter.write(data, f"outputs/{filename}.csv")
 
 # Show output
 image.generate(f"inputs/{filename}.png", filteredDetectedText)
-print(data)
+
+print("\nExtracted data:")
+for d in data:
+    print(f"{list(d.keys())[0]}: {list(d.values())[0]}")
