@@ -36,6 +36,7 @@ class Reader:
                     search.stringBelow,
                     detectedTextList,
                     field.pattern,
+                    field.regionHeight,
                     field.nCandidates,
                 )
 

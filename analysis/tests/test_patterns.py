@@ -94,6 +94,26 @@ def testIOP():
     routine(patterns.IOP, "12.3")
 
 
+def testKeratoMm():
+    for n in [7.00, 7.12, 7.89]:
+        routine(patterns.keratoMm, f"{n:.2f}")
+
+
+def testKeratoAs():
+    for n in [10, 175]:
+        routine(patterns.keratoAs, f"{n}")
+
+
+def testKeratoDio():
+    for n in [43, 44.25, 45.50, 46.75]:
+        routine(patterns.keratoDio, f"{n:.2f}")
+
+
+def testKeratoJaval():
+    for n in [-1, -2.25]:
+        routine(patterns.keratoJaval, f"{n:.2f}")
+
+
 def testLengthMm():
     routine(patterns.lengthMm, "123.45 mm", ("123.45",))
 

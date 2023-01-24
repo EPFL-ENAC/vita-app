@@ -31,7 +31,7 @@ class Field:
         onRightof=None,
         regionWidth=None,
         below=None,
-        regionHeight=1,
+        regionHeight=1.0,
         relativeTo=None,
         regionRelative=None,
         nCandidates=None,

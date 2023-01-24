@@ -43,11 +43,16 @@ def generate(picturePath, detectedTextList):
         # Compute font size to fit drawn text width in bounding box
         font = ImageFont.truetype(fontPath, defaultFontSize)
         width, _ = font.getsize(detectedText.text)
-        fontSize = round(defaultFontSize * detectedText.textWidth * im.width / width)
+        if width != 0:
+            fontSize = round(defaultFontSize * detectedText.textWidth * im.width / width)
+        else:
+            fontSize = defaultFontSize
         font = ImageFont.truetype(fontPath, fontSize)
 
         draw.polygon(points, outline=outline, width=lineWidth, fill=fill)
         draw.text(textPos, detectedText.text, fill=textColor, font=font, anchor="lm")
-        print(detectedText.text)
+
+        bboxDebug = [f"({p.x:.3f}, {p.y:.3f})" for p in detectedText.bbox.points]
+        print(f'drawing "{detectedText.text}" at', *bboxDebug)
 
     im.show()

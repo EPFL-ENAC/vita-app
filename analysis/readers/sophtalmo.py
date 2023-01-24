@@ -207,3 +207,88 @@ for eye in ["OD", "OG"]:
             regionWidth=5
         ),
     ])
+
+
+# Keratometry
+
+reader.fields.extend([
+    Field("keratometry", "Kératométrie"),
+
+    Field(
+        "keratometry OD mm key",
+        "mm",
+        relativeTo="keratometry",
+        regionRelative=BoundingBox.fromBounds(0, 30, -1.5, 0.5)
+    ),
+    Field(
+        "keratometry OD As key",
+        "As",
+        onRightof="keratometry OD mm key",
+        regionWidth=20
+    ),
+    Field(
+        "keratometry OD Dio key",
+        "Dio",
+        onRightof="keratometry OD As key",
+        regionWidth=20
+    ),
+    Field(
+        "keratometry OD Javal key",
+        "Javal",
+        onRightof="keratometry OD Dio key",
+        regionWidth=20
+    ),
+
+    Field(
+        "keratometry OG mm key",
+        "mm",
+        onRightof="keratometry OD mm key",
+    ),
+    Field(
+        "keratometry OG As key",
+        "As",
+        onRightof="keratometry OG mm key",
+    ),
+    Field(
+        "keratometry OG Dio key",
+        "Dio",
+        onRightof="keratometry OG mm key",
+    ),
+    Field(
+        "keratometry OG Javal key",
+        "Javal",
+        onRightof="keratometry OG mm key",
+    ),
+])
+
+
+for eye in ["OD", "OG"]:
+    for subIndex in range(4):
+        sub = ["mm", "As", "Dio", "Javal"][subIndex]
+        pattern = [
+            patterns.keratoMm,
+            patterns.keratoAs,
+            patterns.keratoDio,
+            patterns.keratoJaval
+        ][subIndex]
+        # for relative positioning
+        referenceName = f"keratometry {eye} {sub} key"
+
+        for i in range(1, 4):  # from 1 to 3
+            fieldName = f"keratometry {eye} {sub} {i}"
+
+            # Need to adjust search region height because the reference "mm"
+            # bbox is smaller than the others
+            regionHeight = 2 if sub == "mm" and i == 1 else 1
+
+            reader.fields.append(
+                Field(
+                    fieldName,
+                    pattern,
+                    [f"{eye}-Keratometry-{sub}{i}"],
+                    below=referenceName,
+                    regionHeight=regionHeight
+                )
+            )
+            # entries are stacked vertically, so the next one is below
+            referenceName = fieldName

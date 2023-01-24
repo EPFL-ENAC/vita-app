@@ -19,6 +19,11 @@ acuityFar = fr"({acuityFarMain}(?: \({acuityFarSub}\))?)"
 acuityNear = r"(P\d{1,2}(?:\.\d)?f)"
 IOP = r"(\d{1,2}(?:\.\d)?)"
 
+keratoMm = r"(\d\.\d{2})"
+keratoAs = r"(\d{1,3})"
+keratoDio = r"(\d{1,2}\.(?:00|25|50|75))"
+keratoJaval = r"([+-]\d\.(?:00|25|50|75))"
+
 lengthMm = r"(\d+\.\d{2}) mm"
 lengthUm = r"(\d{1,4}) [up]m"
 timeS = r"(\d{1,3}) [sS]"
