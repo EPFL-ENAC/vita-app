@@ -21,6 +21,7 @@ def testName():
 
 def testDate():
     routine(patterns.date, "01.02.2003")
+    routine(patterns.date, "01/02/2003")
 
 
 def testTime():
@@ -39,8 +40,58 @@ def testAngle():
 
 
 def testShapeSphere():
-    routine(patterns.shapeSphere, "+ 123.45 D", ("+ 123.45",))
-    routine(patterns.shapeSphere, "- 1.23 D", ("- 1.23",))
+    for s in ["+12.00", "+ 12.25", "-12.50", "- 12.75"]:
+        routine(patterns.shapeSphere, s)
+
+
+def testShapeAlcon():
+    sphere = "- 4.50"
+    cylinder = "- 0.25"
+    axis = "170"
+    string = f"{sphere} D {cylinder} D x {axis} °"
+    routine(patterns.shapeAlcon, string, (sphere, cylinder, axis))
+
+
+def testShapeSophtalmo():
+    sphere = "-4.50"
+    cylinder = "-0.25"
+    axis = "170"
+    string = f"{sphere} ( {cylinder} à {axis} °)"
+    routine(patterns.shapeSophtalmo, string, (sphere, cylinder, axis))
+
+
+def testAdd():
+    for s in ["0.00", "1.25", "2.50", "3.75"]:
+        routine(patterns.add, s)
+
+
+def testAcuityFar():
+    # Test acuityFarMain
+    for n in range(1, 10):  # 0.1 to 0.9
+        routine(patterns.acuityFar, f"0.{n}")
+    for n in [0.12, 0.25, 0.32, 0.63, 1.2, 1.25, 1.5, 1.6, 1.8]:
+        routine(patterns.acuityFar, f"{n}")
+    for n in [1, 2]:  # 1.0 and 2.0
+        routine(patterns.acuityFar, f"{n:.1f}")
+    for s in ["FC", "CLD", "CD", "CF", "HM", "VBLM", "VM", "MM"]:
+        routine(patterns.acuityFar, s)
+    for s1 in ["LP", "PL"]:
+        for s2 in ["", "+", "-"]:
+            routine(patterns.acuityFar, f"{s1}{s2}")
+
+    # Test with acuityFarSub
+    for s in ["3/5", "4/5", "5/5", "f", "ff", "+", "-", "--", "p", "pp", "faible"]:
+        routine(patterns.acuityFar, f"1.0 ({s})")
+    pass
+
+
+def testAcuityNear():  # Parinaud scale
+    for n in [28, 1.5]:
+        routine(patterns.acuityNear, f"P{n}f")
+
+
+def testIOP():
+    routine(patterns.IOP, "12.3")
 
 
 def testLengthMm():

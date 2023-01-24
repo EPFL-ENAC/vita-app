@@ -3,7 +3,9 @@ from readers import search
 
 
 class Reader:
-    def __init__(self, fields):
+    def __init__(self, name, distinctivePattern, fields):
+        self.name = name
+        self.distinctivePattern = distinctivePattern
         self.fields = fields
 
     def read(self, detectedTextList):
@@ -14,12 +16,6 @@ class Reader:
         data = []
 
         for field in self.fields:
-            if field.keys is None:  # retreive detectedText without adding data
-                fieldCandidates[field.name] = search.string(
-                    detectedTextList, field.pattern, field.region, field.nCandidates
-                )
-                continue
-
             if field.onRightof is not None:
                 refs = fieldCandidates[field.onRightof]
                 newData, bestRef, candidates, _ = searchDataRelative(
@@ -43,6 +39,19 @@ class Reader:
                     field.nCandidates,
                 )
 
+            elif field.relativeTo is not None:
+                refs = fieldCandidates[field.relativeTo]
+                newData, bestRef, candidates, _ = searchDataRelative(
+                    refs,
+                    field.keys,
+                    search.stringRelative,
+                    detectedTextList,
+                    field.pattern,
+                    field.regionRelative,
+                    nCandidates=field.nCandidates,
+                    includeReference=True
+                )
+
             else:  # Non-relative field
                 bestRef = None
                 newData, candidates, _ = searchData(
@@ -53,6 +62,7 @@ class Reader:
                     field.region,
                 )
 
+
             # Populate filteredDetectedText
             for candidate in candidates:
                 if candidate.detectedText not in detectedTextList:
@@ -62,7 +72,17 @@ class Reader:
             if bestRef is not None:
                 filteredDetectedText.add(bestRef.detectedText)
 
+            # Save field candidates
             fieldCandidates[field.name] = candidates
+
+            # If no keys provided, no need to save data
+            if len(field.keys) == 0:
+                continue
+
+            # Reorder data if needed
+            if field.keysCaptureIds is not None:
+                newData = [newData[i] for i in field.keysCaptureIds]
+
             data.extend(newData)
 
         return data, list(filteredDetectedText)

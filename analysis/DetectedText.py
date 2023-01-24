@@ -24,6 +24,11 @@ class DetectedText:
         """Returns the bounding box height in 0 to 1 range"""
         return self.bbox.topLeft.y - self.bbox.bottomLeft.y
 
+    @property
+    def textWidth(self):
+        """Returns the bounding box width in 0 to 1 range"""
+        return self.bbox.bottomRight.x - self.bbox.bottomLeft.x
+
     def copy(self):
         return DetectedText(self.text, self.bbox.copy())
 

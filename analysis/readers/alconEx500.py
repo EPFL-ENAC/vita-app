@@ -8,6 +8,8 @@ distinctivePattern = "EX500.+Treatment Report"
 
 
 reader = Reader(
+    "Alcon EX500",
+    distinctivePattern,
     [
         Field("title", distinctivePattern),
         Field(
@@ -36,7 +38,7 @@ reader = Reader(
         Field("refraction key", "Refraction"),
         Field(
             "refraction",
-            patterns.shape,
+            patterns.shapeAlcon,
             ["Refraction sphere", "Refraction cylinder", "Refraction axis"],
             onRightof="refraction key",
             regionWidth=20,
@@ -44,7 +46,7 @@ reader = Reader(
         Field("treatment key", "(Treatment|Correction)", nCandidates=5),
         Field(
             "treatment",
-            patterns.shape,
+            patterns.shapeAlcon,
             ["Treatment sphere", "Treatment cylinder", "Treatment axis"],
             onRightof="treatment key",
             regionWidth=20,

@@ -1,7 +1,7 @@
 import sys
 import DetectedText
 import image
-from readers import alconEx500, search
+from readers.findBestReader import findBestReader
 import csvWriter
 
 
@@ -17,13 +17,15 @@ filename = sys.argv[1]
 allDetectedText = DetectedText.fromFile(f"inputs/{filename}.json")
 
 # Check that input correcponds to Alcon EX500 format
-candidates = search.string(allDetectedText, alconEx500.distinctivePattern)
-if len(candidates) != 1:
-    print("Error: input does not correspond to Alcon EX500 format.")
+reader = findBestReader(allDetectedText)
+if reader is None:
+    print("Could not find a matching reader.")
     quit()
 
-data, filteredDetectedText = alconEx500.reader.read(allDetectedText)
+# Generate structured output
+data, filteredDetectedText = reader.read(allDetectedText)
 csvWriter.write(data, f"outputs/{filename}.csv")
 
+# Show output
 image.generate(f"inputs/{filename}.png", filteredDetectedText)
 print(data)
