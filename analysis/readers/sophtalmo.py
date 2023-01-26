@@ -28,24 +28,24 @@ reader = Reader(
         Field("autorefract", "AutoRéfractom"),
         Field(
             "autorefract OD key",
-            "OD: ",
+            "OD:",
             relativeTo="autorefract",
             # "Indice de fiabilité" may be present, extend search downwards
             regionRelative=BoundingBox.fromBounds(0, 30, -3.5, 0.5)
         ),
         Field(
             "autorefract OG key",
-            "OG: ",
+            "OG:",
             onRightof="autorefract OD key"
         ),
 
         # Refractometer
-        Field("refraction", "Réfractom"),
+        Field("refraction", "Réfraction"),
         Field(
             "refraction OD key",
-            "OD: ",
+            "OD:",
             relativeTo="refraction",
-            regionRelative=BoundingBox.fromBounds(0, 30, -1.5, 0.5)
+            regionRelative=BoundingBox.fromBounds(0, 30, -2, 0.5)
         ),
         Field(
             "refraction OD ADD key",
@@ -55,7 +55,7 @@ reader = Reader(
         ),
         Field(
             "refraction OG key",
-            "OG: ",
+            "OG:",
             onRightof="refraction OD key"
         ),
         Field(
@@ -69,9 +69,9 @@ reader = Reader(
         Field("glasses", "Portée"),
         Field(
             "glasses OD key",
-            "OD: ",
+            "OD:",
             relativeTo="glasses",
-            regionRelative=BoundingBox.fromBounds(0, 30, -1.5, 0.5)
+            regionRelative=BoundingBox.fromBounds(0, 30, 0, 2)
         ),
         Field(
             "glasses OD ADD key",
@@ -81,7 +81,7 @@ reader = Reader(
         ),
         Field(
             "glasses OG key",
-            "OG: ",
+            "OG:",
             onRightof="glasses OD key"
         ),
         Field(
@@ -96,7 +96,7 @@ reader = Reader(
             "acuity",
             "Acuité",
             below="refraction OD key",
-            regionHeight=4
+            regionHeight=5
         ),
         Field(
             "acuity OD far key",
@@ -122,16 +122,16 @@ reader = Reader(
         ),
 
         # IOP
-        Field("IOP", "TO"),
+        Field("IOP", r"^TO$"),
         Field(
             "IOP OD key",
-            "OD: ",
+            "OD:",
             relativeTo="IOP",
-            regionRelative=BoundingBox.fromBounds(0, 30, -1.0, 0.5)
+            regionRelative=BoundingBox.fromBounds(0, 30, -1.5, 0.5)
         ),
         Field(
             "IOP OG key",
-            "OG: ",
+            "OG:",
             onRightof="IOP OD key"
         ),
     ]
@@ -280,6 +280,8 @@ for eye in ["OD", "OG"]:
             # Need to adjust search region height because the reference "mm"
             # bbox is smaller than the others
             regionHeight = 2 if sub == "mm" and i == 1 else 1
+            # Search further in case one OCR box is missing
+            regionHeight *= 4 - i  # 3, 2, 1
 
             reader.fields.append(
                 Field(
