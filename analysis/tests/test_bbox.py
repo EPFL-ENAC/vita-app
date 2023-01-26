@@ -1,7 +1,4 @@
-import sys
-
-sys.path.insert(0, ".")
-
+import context
 from BoundingBox import BoundingBox, Point
 
 

@@ -1,7 +1,4 @@
-import sys
-
-sys.path.insert(0, ".")
-
+import context
 import regex
 from readers import search
 from DetectedText import DetectedText
