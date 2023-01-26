@@ -70,7 +70,7 @@ class Reader:
                     continue
                 filteredDetectedText.add(candidate.detectedText)
 
-            if bestRef is not None:
+            if bestRef is not None and bestRef.detectedText in detectedTextList:
                 filteredDetectedText.add(bestRef.detectedText)
 
             # Save field candidates
