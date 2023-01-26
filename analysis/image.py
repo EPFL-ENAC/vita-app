@@ -56,3 +56,9 @@ def generate(picturePath, detectedTextList):
         print(f'drawing "{detectedText.text}" at', *bboxDebug)
 
     im.show()
+    return im
+
+
+def save(im, path):
+    im.save(path)
+    print(f"Image saved to {path}")

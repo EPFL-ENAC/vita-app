@@ -15,7 +15,9 @@ if jsonIndex == -1:
     print("\nError: specified file is not a json")
     quit()
 
+# Remove .json extension
 filename = filename[:jsonIndex]
+outname = filename.replace("inputs/", "outputs/")
 
 
 # import from iOS output
@@ -29,10 +31,11 @@ if reader is None:
 
 # Generate structured output
 data, filteredDetectedText = reader.read(allDetectedText)
-csvWriter.write(data, f"{filename}.csv".replace("inputs/", "outputs/"))
+csvWriter.write(data, f"{outname}.csv")
 
 # Show output
-image.generate(f"{filename}.png", filteredDetectedText)
+im = image.generate(f"{filename}.png", filteredDetectedText)
+image.save(im, f"{outname}_filtered.png")
 
 print("\nExtracted data:")
 for d in data:
