@@ -265,6 +265,7 @@ reader.fields.extend([
 for eye in ["OD", "OG"]:
     for subIndex in range(4):
         sub = ["mm", "As", "Dio", "Javal"][subIndex]
+        reps = [3, 3, 3, 2][subIndex]
         pattern = [
             patterns.keratoMm,
             patterns.keratoAs,
@@ -274,14 +275,14 @@ for eye in ["OD", "OG"]:
         # for relative positioning
         referenceName = f"keratometry {eye} {sub} key"
 
-        for i in range(1, 4):  # from 1 to 3
+        for i in range(1, reps + 1):  # from 1 to reps
             fieldName = f"keratometry {eye} {sub} {i}"
 
             # Need to adjust search region height because the reference "mm"
             # bbox is smaller than the others
             regionHeight = 2 if sub == "mm" and i == 1 else 1
             # Search further in case one OCR box is missing
-            regionHeight *= 4 - i  # 3, 2, 1
+            regionHeight *= reps + 1 - i  # from reps to 1
 
             reader.fields.append(
                 Field(
