@@ -55,8 +55,11 @@ def generate(picturePath, detectedTextList):
         bboxDebug = [f"({p.x:.3f}, {p.y:.3f})" for p in detectedText.bbox.points]
         print(f'drawing "{detectedText.text}" at', *bboxDebug)
 
-    im.show()
     return im
+
+
+def show(im):
+    im.show()
 
 
 def save(im, path):
