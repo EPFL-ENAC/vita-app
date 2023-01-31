@@ -58,13 +58,15 @@ In that case, the images are saved but not shown.
 ## Structured output
 
 ```
-python3 structuredOutput.py inputs/path_to.json
+python3 structuredOutput.py inputs/path_to.json [format]
 ```
 An image displaying the found fields is shown and a `.csv` file is written in the `analysis/outputs` directory.
-Similarily to visualizing OCR output, Multiple files can be processed at once.
+Similarly to visualizing OCR output, Multiple files can be processed at once.
+
+If `format` is not specified, the best format will be automatically selected. `format` can be either `"Alcon EX500"` or `"Sophtalmo"`.
 
 ## Testing installation
-Run the following command from the `analysis` diretory:
+Run the following command from the `analysis` directory:
 ```
 pytest
 ```
