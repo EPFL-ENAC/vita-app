@@ -64,6 +64,14 @@ Similarly to visualizing OCR output, Multiple files can be processed at once.
 
 If `software` is not specified, the best matching software will be automatically selected. `software` can be either `"Alcon EX500"` or `"Sophtalmo"`.
 
+## Comparing output to reference
+
+An output `.csv` file can be compared to a reference table file using the command
+```
+python3 compare.py reference file
+```
+`reference` and `file` can be `.csv` or `.xlsx` files.
+
 ## Testing installation
 ```
 make test
