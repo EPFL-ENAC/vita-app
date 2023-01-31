@@ -1,1 +1,1 @@
-ERROR_MAX = 5
+ERROR_MAX = 3

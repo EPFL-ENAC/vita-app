@@ -90,6 +90,8 @@ def testAcuityNear():  # Parinaud scale
 
 def testIOP():
     routine(patterns.IOP, "12.3")
+    routine(patterns.IOP, "APL15")
+    routine(patterns.IOP, "APL")
 
 
 def testKeratoMm():

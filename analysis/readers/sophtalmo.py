@@ -20,7 +20,7 @@ reader = Reader(
         ),
         Field(
             "date",
-            f"{patterns.date} .+ {distinctivePattern}",
+            f"{patterns.date} {patterns.time}",
             ["Date of consultation"]
         ),
 
@@ -40,7 +40,7 @@ reader = Reader(
         ),
 
         # Refractometer
-        Field("refraction", "Réfraction"),
+        Field("refraction", "^Réfraction$"),
         Field(
             "refraction OD key",
             "OD:",
@@ -71,7 +71,7 @@ reader = Reader(
             "glasses OD key",
             "OD:",
             relativeTo="glasses",
-            regionRelative=BoundingBox.fromBounds(0, 30, 0, 2)
+            regionRelative=BoundingBox.fromBounds(0, 30, -0.5, 2)
         ),
         Field(
             "glasses OD ADD key",
@@ -108,12 +108,12 @@ reader = Reader(
             "acuity OD near key",
             "de près",
             onRightof="acuity OD far key",
-            regionWidth=50
+            regionWidth=20
         ),
         Field(
             "acuity OG far key",
             "de loin",
-            onRightof="acuity OD near key" # search even if OD far not present
+            onRightof="acuity OD far key" # search even if OD near not present
         ),
         Field(
             "acuity OG near key",
@@ -192,12 +192,14 @@ for eye in ["OD", "OG"]:
             patterns.acuityFar,
             [f"{eye}-VisualAcuity-Far"],
             below=f"acuity {eye} far key",
+            regionHeight=2
         ),
         Field(
             f"acuity {eye} near",
             patterns.acuityNear,
             [f"{eye}-VisualAcuity-Near"],
             below=f"acuity {eye} near key",
+            regionHeight=2
         ),
         Field(
             f"IOP {eye}",
@@ -224,19 +226,19 @@ reader.fields.extend([
         "keratometry OD As key",
         "As",
         onRightof="keratometry OD mm key",
-        regionWidth=20
+        regionWidth=15
     ),
     Field(
         "keratometry OD Dio key",
         "Dio",
-        onRightof="keratometry OD As key",
-        regionWidth=20
+        onRightof="keratometry OD mm key",
+        regionWidth=30
     ),
     Field(
         "keratometry OD Javal key",
         "Javal",
-        onRightof="keratometry OD Dio key",
-        regionWidth=20
+        onRightof="keratometry OD mm key",
+        regionWidth=45
     ),
 
     Field(
@@ -280,9 +282,7 @@ for eye in ["OD", "OG"]:
 
             # Need to adjust search region height because the reference "mm"
             # bbox is smaller than the others
-            regionHeight = 2 if sub == "mm" and i == 1 else 1
-            # Search further in case one OCR box is missing
-            regionHeight *= reps + 1 - i  # from reps to 1
+            regionHeight = 2 if sub == "mm" and i == 1 else 1.5
 
             reader.fields.append(
                 Field(
