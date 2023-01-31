@@ -1,6 +1,6 @@
-name = r"([a-zA-z\- ]+)"
+name = r"([a-zA-z][a-zA-z\- ]*[a-zA-z])"
 date = r"([0-3]\d[\./][0-1]\d[\./]\d{4})"
-time = r"(\d{2}:\d{2}:\d{2})"
+time = r"(\d{2}:\d{2}(?::\d{2})?)"
 dateTime = f"{date} {time}"
 angle = r"(\d{1,3}) °"
 

@@ -22,6 +22,7 @@ def testDate():
 
 
 def testTime():
+    routine(patterns.time, "04:05")
     routine(patterns.time, "04:05:06")
 
 
