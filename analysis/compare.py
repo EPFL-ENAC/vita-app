@@ -1,6 +1,5 @@
 import sys
 import pandas as pd
-import numpy as np
 import Levenshtein
 
 
@@ -52,7 +51,7 @@ for col in reference:
             read = read.strftime(dateFormat)
 
     # Format floats that have a comma instead of a dot
-    elif isinstance(target, np.floating):
+    else:
         try:
             read = float(str(read).replace(",", "."))
         except ValueError:
