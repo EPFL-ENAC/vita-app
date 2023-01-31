@@ -14,7 +14,7 @@ reader = Reader(
     [
         Field(
             "nameBirth",
-            fr" - {patterns.name} {patterns.name} - (\d+) - {patterns.date}",
+            fr"Contacts - Softalmo [0-9\.]+ - {patterns.name} {patterns.name} - (\d+) - {patterns.date}",
             ["First name", "Last name", "ID", "DOB"],
             dataOrder=[1, 0, 3, 2]
         ),
