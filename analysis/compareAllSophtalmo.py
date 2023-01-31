@@ -6,5 +6,5 @@ for i in range(1, 11):
             continue
         filename = f"patient{i}{app}"
         cmd = f"python3 compare.py references/sophtalmo-screenshots/{filename}.xlsx outputs/sophtalmo-screenshots/{filename}.csv"
-        print(cmd)
+        print(cmd, flush=True)
         system(cmd)
