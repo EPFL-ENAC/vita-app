@@ -1,8 +1,6 @@
 from readers import search, alconEx500, sophtalmo
+from readers.list import formats
 import config
-
-
-formats = [alconEx500, sophtalmo]
 
 
 def findBestReader(detectedTextList):

@@ -5,7 +5,7 @@ import image
 
 
 if len(sys.argv) != 2:
-    print("\nUsage: python3 structuredOutput.py path_to_json")
+    print("\nUsage: python3 structuredOutput.py path_to_json\n")
     print("If path_to_json is a directory, all the json files in the directory tree will be processed.")
     quit()
 
