@@ -40,14 +40,15 @@ for col in reference:
 
     # Reformat last name (full caps in documents)
     if col == "Last name":
-        target = target.title()
-        read = read.title()
+        target = str(target).title()
+        read = str(read).title()
 
     # Format dates
-    if type(target) == pd.Timestamp:
-        target = target.strftime(dateFormat)
-    if type(read) == pd.Timestamp:
-        read = read.strftime(dateFormat)
+    elif col == "DOB" or col == "Date of consultation":
+        if type(target) == pd.Timestamp:
+            target = target.strftime(dateFormat)
+        if type(read) == pd.Timestamp:
+            read = read.strftime(dateFormat)
 
 
     # Maching
