@@ -25,7 +25,7 @@ for filename in filenames:
 
     # Generate image with detected text
     im = image.generate(f"{filename}.png", allDetectedText)
-    image.save(im, f"{outname}_filtered.png")
+    image.save(im, f"{outname}_all.png")
 
     # Show image only if one file is processed
     if len(filenames) == 1:
