@@ -10,7 +10,8 @@ textColor = (0, 0, 0)  # black
 # Text area style
 fill = (255, 255, 255, 192)  # semi-transparent white
 lineWidth = 3
-outline = (192, 0, 0)  # dark red
+textOutline = (192, 0, 0)  # dark red
+regionOutline = (192, 192, 192)  # light grey
 defaultFontSize = 12
 
 
@@ -27,12 +28,16 @@ def toPixels(point, im):
     return (point.x * im.width, (1 - point.y) * im.height)  # inverted vertical axis
 
 
-def generate(picturePath, detectedTextList):
+def generate(picturePath, detectedTextList, regions=[]):
     # Load cropped picture
     im = Image.open(picturePath)
 
     # Create draw object
     draw = ImageDraw.Draw(im, "RGBA")
+
+    for region in regions:
+        points = [toPixels(p, im) for p in region.points]
+        draw.polygon(points, outline=regionOutline, width=lineWidth)
 
     for detectedText in detectedTextList:
         points = [toPixels(p, im) for p in detectedText.points]
@@ -49,7 +54,7 @@ def generate(picturePath, detectedTextList):
             fontSize = defaultFontSize
         font = ImageFont.truetype(fontPath, fontSize)
 
-        draw.polygon(points, outline=outline, width=lineWidth, fill=fill)
+        draw.polygon(points, outline=textOutline, width=lineWidth, fill=fill)
         draw.text(textPos, detectedText.text, fill=textColor, font=font, anchor="lm")
 
         bboxDebug = [f"({p.x:.3f}, {p.y:.3f})" for p in detectedText.bbox.points]

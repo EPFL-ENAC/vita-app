@@ -9,11 +9,12 @@ class Reader:
         self.fields = fields
 
     def read(self, detectedTextList):
-        """Bluid data from detected texts"""
+        """Build data from detected texts"""
 
         filteredDetectedText = set()
         fieldCandidates = {}
         data = []
+        regions = []
 
         for field in self.fields:
             if field.onRightof is not None:
@@ -70,8 +71,15 @@ class Reader:
                     continue
                 filteredDetectedText.add(candidate.detectedText)
 
-            if bestRef is not None and bestRef.detectedText in detectedTextList:
-                filteredDetectedText.add(bestRef.detectedText)
+            if bestRef is not None:
+                if bestRef.detectedText in detectedTextList:
+                    filteredDetectedText.add(bestRef.detectedText)
+
+            # Save region where field was shearched
+            if len(candidates) > 0:
+                region = candidates[0].regionSearched
+                if region is not None:
+                    regions.append(region)
 
             # Save field candidates
             fieldCandidates[field.name] = candidates
@@ -86,7 +94,7 @@ class Reader:
 
             data.extend(newData)
 
-        return data, list(filteredDetectedText)
+        return data, list(filteredDetectedText), regions
 
 
 def searchData(keys, searchFunc, *args, **kwargs):
