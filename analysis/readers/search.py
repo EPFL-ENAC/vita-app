@@ -29,10 +29,11 @@ def fuzzySearch(pattern, string, errorMax):
 class Candidate:
     """Container for DetectedText instance and fuzzySearch result"""
 
-    def __init__(self, detectedText, errors, regexMatch):
+    def __init__(self, detectedText, errors, regexMatch, regionSearched=None):
         self.detectedText = detectedText
         self.errors = errors
         self.regexMatch = regexMatch
+        self.regionSearched = regionSearched
 
 
 def string(detectedTextList, pattern, region=None, nCandidates=1):
@@ -63,7 +64,7 @@ def string(detectedTextList, pattern, region=None, nCandidates=1):
         if error is None:
             continue
 
-        candidates.append(Candidate(detectedText, error, regexMatch))
+        candidates.append(Candidate(detectedText, error, regexMatch, region))
 
     candidates.sort(key=lambda c: c.errors)
     return candidates[:nCandidates]

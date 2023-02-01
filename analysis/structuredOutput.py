@@ -48,11 +48,11 @@ for filename in filenames:
         reader = desiredReader
 
     # Generate structured output
-    data, filteredDetectedText = reader.read(allDetectedText)
+    data, filteredDetectedText, regions = reader.read(allDetectedText)
     csvWriter.write(data, f"{outname}.csv")
 
     # Generate image with detected text
-    im = image.generate(f"{filename}.png", filteredDetectedText)
+    im = image.generate(f"{filename}.png", filteredDetectedText, regions)
     image.save(im, f"{outname}_filtered.png")
 
     # Show image only if one file is processed
