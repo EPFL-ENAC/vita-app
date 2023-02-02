@@ -51,7 +51,7 @@ class Reader:
                     field.pattern,
                     field.regionRelative,
                     nCandidates=field.nCandidates,
-                    includeReference=True
+                    includeReference=True,
                 )
 
             else:  # Non-relative field
@@ -63,7 +63,6 @@ class Reader:
                     field.pattern,
                     field.region,
                 )
-
 
             # Populate filteredDetectedText
             for candidate in candidates:

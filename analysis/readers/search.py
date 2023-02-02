@@ -59,7 +59,9 @@ def string(detectedTextList, pattern, region=None, nCandidates=1):
             if not region.contains(center):
                 continue
 
-        error, regexMatch = fuzzySearch(pattern, detectedText.text, config.ERROR_MAX)
+        error, regexMatch = fuzzySearch(
+            pattern, detectedText.text, config.ERROR_MAX
+        )
 
         if error is None:
             continue
@@ -77,8 +79,8 @@ def stringRelative(
     region,
     regionIsRelative=True,
     nCandidates=1,
-    includeReference=False
-    ):
+    includeReference=False,
+):
     """Searches for a string relative to a reference
 
     Args:
@@ -114,7 +116,9 @@ def stringRelative(
     # Example: reference text is "unwanted-value key: value", we should
     # prevent "unwanted-value" from matching.
     if includeReference:
-        detectedTextList = detectedTextList.copy()  # don't mutate original list
+        detectedTextList = (
+            detectedTextList.copy()
+        )  # don't mutate original list
         if reference.detectedText in detectedTextList:
             detectedTextList.remove(reference.detectedText)
         cropped = reference.detectedText.copy()
@@ -124,7 +128,9 @@ def stringRelative(
     return string(detectedTextList, pattern, region, nCandidates)
 
 
-def stringOnRight(reference, detectedTextList, pattern, regionWidth=None, nCandidates=1):
+def stringOnRight(
+    reference, detectedTextList, pattern, regionWidth=None, nCandidates=1
+):
     """Searches for a string on the right of a reference
 
     The checked region includes the reference bounding box, in case the
@@ -153,11 +159,20 @@ def stringOnRight(reference, detectedTextList, pattern, regionWidth=None, nCandi
     region.bottomRight.x += addedWidth
     region.topRight.x += addedWidth
 
-    return stringRelative(reference, detectedTextList, pattern, region,
-                          regionIsRelative=False, nCandidates=nCandidates, includeReference=True)
+    return stringRelative(
+        reference,
+        detectedTextList,
+        pattern,
+        region,
+        regionIsRelative=False,
+        nCandidates=nCandidates,
+        includeReference=True,
+    )
 
 
-def stringBelow(reference, detectedTextList, pattern, regionHeight=1, nCandidates=1):
+def stringBelow(
+    reference, detectedTextList, pattern, regionHeight=1, nCandidates=1
+):
     """Searches for a string below a reference
 
     The checked region is the reference bounding box shifted down by one
@@ -182,8 +197,14 @@ def stringBelow(reference, detectedTextList, pattern, regionHeight=1, nCandidate
     for p in region.points:
         p.y -= reference.detectedText.lineHeight
     # Change region height by expanding the bottom
-    region.bottomLeft .y -= (regionHeight - 1) * lineHeight
+    region.bottomLeft.y -= (regionHeight - 1) * lineHeight
     region.bottomRight.y -= (regionHeight - 1) * lineHeight
 
-    return stringRelative(reference, detectedTextList, pattern, region,
-                          regionIsRelative=False, nCandidates=nCandidates)
+    return stringRelative(
+        reference,
+        detectedTextList,
+        pattern,
+        region,
+        regionIsRelative=False,
+        nCandidates=nCandidates,
+    )

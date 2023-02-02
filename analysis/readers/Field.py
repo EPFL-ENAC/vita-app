@@ -21,6 +21,7 @@ class Field:
 
         nCandidates (int): number of candidates to search
     """
+
     def __init__(
         self,
         name,

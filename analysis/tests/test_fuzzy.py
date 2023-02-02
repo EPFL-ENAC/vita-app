@@ -1,4 +1,3 @@
-import context
 from readers import search
 
 

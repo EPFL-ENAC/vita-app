@@ -69,7 +69,10 @@ class BoundingBox:
     def fromBounds(xmin, xmax, ymin, ymax):
         """Creates new instance from coordinates"""
         return BoundingBox(
-            Point(xmin, ymin), Point(xmax, ymin), Point(xmin, ymax), Point(xmax, ymax)
+            Point(xmin, ymin),
+            Point(xmax, ymin),
+            Point(xmin, ymax),
+            Point(xmax, ymax),
         )
 
 
