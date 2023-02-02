@@ -3,14 +3,20 @@ from utils import getListOfJsonFilenames
 import DetectedText
 import image
 from readers.findBestReader import findBestReader
-from readers.list import formats, names as formatNames, readers
+from readers.list import names as formatNames, readers
 import csvWriter
 
 
 if len(sys.argv) != 2 and len(sys.argv) != 3:
     print("\nUsage: python3 structuredOutput.py path_to_json [format]\n")
-    print("If path_to_json is a directory, all the json files in the directory tree will be processed.")
-    print("If 'format' is not specified, the best format will be automatically selected. 'format' must be taken from the following list:")
+    print(
+        "If path_to_json is a directory, all the json files in the directory"
+        "tree will be processed."
+    )
+    print(
+        "If 'format' is not specified, the best format will be automatically"
+        "selected. 'format' must be taken from the following list:"
+    )
     for name in formatNames:
         print(f'\t"{name}"')
     quit()
@@ -32,7 +38,7 @@ for filename in filenames:
     print(f"\nProcessing {filename}\n")
 
     # Remove .json extension
-    filename = filename[:filename.rfind(".json")]
+    filename = filename[: filename.rfind(".json")]
     outname = filename.replace("inputs/", "outputs/")
 
     # import from iOS output

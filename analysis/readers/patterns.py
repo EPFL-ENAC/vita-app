@@ -8,13 +8,13 @@ shapeSphere = r"([+-]? ?[1-3]?\d\.(?:00|25|50|75))"
 shapeCylinder = shapeSphere
 shapeAxis = angle
 shapeAlcon = f"{shapeSphere} D {shapeCylinder} D x {shapeAxis}"
-shapeSophtalmo = fr"{shapeSphere} \( ?{shapeCylinder} à {shapeAxis}\)"
+shapeSophtalmo = rf"{shapeSphere} \( ?{shapeCylinder} à {shapeAxis}\)"
 
 add = r"([0-4]\.(?:00|25|50|75))"
 
 acuityFarMain = r"(?:\d\.\d{1,2}|FC|CLD|CD|CF|HM|VBLM|VM|MM|(?:LP|PL)[\+\-]?)"
 acuityFarSub = r"(?:3/5|4/5|5/5|f|ff|\+|-|--|p|pp|faible)"
-acuityFar = fr"({acuityFarMain}(?: \({acuityFarSub}\))?)"
+acuityFar = rf"({acuityFarMain}(?: \({acuityFarSub}\))?)"
 
 acuityNear = r"(P\d{1,2}(?:\.\d)?f)"
 IOP = r"([(?:APL)(?:\d{1,2}(?:\.\d))]+)"

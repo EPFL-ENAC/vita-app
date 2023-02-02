@@ -1,4 +1,3 @@
-import context
 from readers import patterns
 import regex
 
@@ -78,7 +77,19 @@ def testAcuityFar():
             routine(patterns.acuityFar, f"{s1}{s2}")
 
     # Test with acuityFarSub
-    for s in ["3/5", "4/5", "5/5", "f", "ff", "+", "-", "--", "p", "pp", "faible"]:
+    for s in [
+        "3/5",
+        "4/5",
+        "5/5",
+        "f",
+        "ff",
+        "+",
+        "-",
+        "--",
+        "p",
+        "pp",
+        "faible",
+    ]:
         routine(patterns.acuityFar, f"1.0 ({s})")
     pass
 

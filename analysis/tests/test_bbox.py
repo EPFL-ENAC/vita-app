@@ -1,4 +1,3 @@
-import context
 from BoundingBox import BoundingBox, Point
 
 

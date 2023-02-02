@@ -6,7 +6,10 @@ import image
 
 if len(sys.argv) != 2:
     print("\nUsage: python3 structuredOutput.py path_to_json\n")
-    print("If path_to_json is a directory, all the json files in the directory tree will be processed.")
+    print(
+        "If path_to_json is a directory, all the json files in the directory"
+        "tree will be processed."
+    )
     quit()
 
 filenames = getListOfJsonFilenames(sys.argv[1])
@@ -17,7 +20,7 @@ for filename in filenames:
     print(f"\nProcessing {filename}\n")
 
     # Remove .json extension
-    filename = filename[:filename.rfind(".json")]
+    filename = filename[: filename.rfind(".json")]
     outname = filename.replace("inputs/", "outputs/")
 
     # import from iOS output

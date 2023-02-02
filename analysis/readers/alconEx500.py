@@ -25,8 +25,19 @@ reader = Reader(
             region=BoundingBox.fromBounds(0.0, 0.5, 0.75, 1),
         ),
         Field("gender key", "Gender"),
-        Field("gender", r"[a-z]+", ["Gender"], onRightof="gender key", regionWidth=10),
-        Field("eye", "O[SD]", ["Eye"], region=BoundingBox.fromBounds(0.2, 0.7, 0.7, 1)),
+        Field(
+            "gender",
+            r"[a-z]+",
+            ["Gender"],
+            onRightof="gender key",
+            regionWidth=10,
+        ),
+        Field(
+            "eye",
+            "O[SD]",
+            ["Eye"],
+            region=BoundingBox.fromBounds(0.2, 0.7, 0.7, 1),
+        ),
         Field("treatment date key", "Treatment date"),
         Field(
             "treatment date",
@@ -133,7 +144,11 @@ reader = Reader(
         ),
         Field("pupil key", "Pupil"),
         Field(
-            "pupil", patterns.lengthMm, ["Pupil"], onRightof="pupil key", regionWidth=5
+            "pupil",
+            patterns.lengthMm,
+            ["Pupil"],
+            onRightof="pupil key",
+            regionWidth=5,
         ),
-    ]
+    ],
 )
