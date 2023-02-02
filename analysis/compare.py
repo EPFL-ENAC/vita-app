@@ -27,7 +27,10 @@ def load(path):
 
 reference = load(referencePath)
 file = load(filePath)
-totalDist = 0
+totalError = 0
+nChars = 0
+wrongFields = 0
+nFields = 0
 
 # Compare each entry
 for col in reference:
@@ -36,7 +39,6 @@ for col in reference:
 
     target = reference[col][0]
     read = file[col][0]
-
 
     # Reformat last name (full caps in documents)
     if col == "Last name":
@@ -57,6 +59,12 @@ for col in reference:
         except ValueError:
             pass
 
+    # Save stats
+    addedChars = len(str(target))
+    nChars += addedChars
+    if (not pd.isna(target)) and addedChars > 0:
+        nFields += 1
+
     # Maching
     if target == read or (pd.isna(target) and pd.isna(read)):
         if pd.isna(target):
@@ -72,9 +80,11 @@ for col in reference:
             target = ""
         if read == "nan":
             read = ""
-        dist = Levenshtein.distance(target, read)
-        totalDist += dist
-        print(f"{col}: {read} (expected '{target}', distance {dist})")
+        error = Levenshtein.distance(target, read)
+        totalError += error
+        wrongFields += 1
+        print(f"{col}: {read} (expected '{target}', {error} errors)")
 
 
-print(f"\nTotal distance: {totalDist}\n")
+print(f"\nTotal error / number of characters: {totalError} / {nChars}")
+print(f"Wrong fields: {wrongFields} / {nFields} \n")
