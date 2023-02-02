@@ -1,6 +1,7 @@
 """Defines functions to generate preview image"""
 
 from PIL import Image, ImageDraw, ImageFont
+import os
 
 
 # Define text style
@@ -31,7 +32,9 @@ def toPixels(point, im):
     )  # inverted vertical axis
 
 
-def generate(picturePath, detectedTextList, regions=[]):
+def generateFromOcrData(
+    picturePath, detectedTextList, regions=[], verbose=False
+):
     # Load cropped picture
     im = Image.open(picturePath)
 
@@ -70,7 +73,8 @@ def generate(picturePath, detectedTextList, regions=[]):
         bboxDebug = [
             f"({p.x:.3f}, {p.y:.3f})" for p in detectedText.bbox.points
         ]
-        print(f'drawing "{detectedText.text}" at', *bboxDebug)
+        if verbose:
+            print(f'drawing "{detectedText.text}" at', *bboxDebug)
 
     return im
 
@@ -80,5 +84,8 @@ def show(im):
 
 
 def save(im, path):
+    # Create the directory if it doesn't exist
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+
     im.save(path)
     print(f"Image saved to {path}")

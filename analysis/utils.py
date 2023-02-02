@@ -1,28 +1,32 @@
 import os
 
 
-def getListOfJsonFilenames(path):
-    filenames = []
+def getListOfJsonPaths(pathIni):
+    paths = []
 
-    # If the path is a file, return a list with the path
-    if os.path.isfile(path):
-        if path.endswith(".json"):
-            filenames.append(path)
+    # If the path is a file, put only this file in the list
+    if os.path.isfile(pathIni):
+        if pathIni.endswith(".json"):
+            paths.append(pathIni)
 
-    # If the path is a directory, return a list of all the json files in the
+    # If the path is a directory, create a list of all the json files in the
     # directory tree
-    elif os.path.isdir(path):
-        for root, dirs, files in os.walk(path):
+    elif os.path.isdir(pathIni):
+        for root, dirs, files in os.walk(pathIni):
             for name in files:
                 if name.endswith(".json"):
-                    filenames.append(os.path.join(root, name))
+                    paths.append(os.path.join(root, name))
 
-    if len(filenames) == 0:
-        print("No json files found in the specified path.")
+    if len(paths) == 0:
+        print("No .json files found in the specified path.")
         quit()
 
-    print(f"Found {len(filenames)} json files:")
-    for filename in filenames:
+    print(f"Found {len(paths)} .json files:")
+    for filename in paths:
         print(filename)
+    print("")
 
-    return filenames
+    # Remove .json extension
+    paths = [os.path.splitext(f)[0] for f in paths]
+
+    return paths

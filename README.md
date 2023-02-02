@@ -39,31 +39,30 @@ make install
 
 ## Input files
 
-Put the OCR files `xxx.json` and `xxx.png` in `analysis/inputs` or any subdirectory.
+Retreive the OCR files `xxx.json` and `xxx.png` from the iOS device and put them on your computer. The pairs of `.json` and `.png` files must be in the same directory.
 
 ## Visualizing the OCR's output
 
 ```
 cd analysis
-poetry run python3 visualizeOcr.py inputs/path_to.json
+poetry run python3 main.py visualize-ocr path_to.json --display-images --o outputs/
 ```
-Shows an image of the detected text and saves it in the `outputs` directory (following the same `path_to` structure).
+Shows the picture overlaid with detected OCR text and saves it in the `outputs` directory, following the same tree structure from as `path_to` (outputs will be in `outputs/path_to...`).
 
 Multiple files can be processed at once:
 ```
-poetry run python3 visualizeOcr.py inputs/path_to_directory
+poetry run python3 main.py visualize-ocr path_to_directory/ --o outputs/
 ```
-In that case, the images are saved but not shown.
 
 ## Structured output
 
 ```
-poetry run python3 structuredOutput.py inputs/path_to.json [format]
+poetry run python3 main.py gen-struct-out path_to.json [-f software] --display-images --o outputs/
 ```
-An image displaying the found fields is shown and a `.csv` file is written in the `analysis/outputs` directory.
+An image displaying the useful fields is shown and a `.csv` file is written in the `outputs` directory.
 Similarly to visualizing OCR output, Multiple files can be processed at once.
 
-If `format` is not specified, the best format will be automatically selected. `format` can be either `"Alcon EX500"` or `"Sophtalmo"`.
+If `software` is not specified, the best matching software will be automatically selected. `software` can be either `"Alcon EX500"` or `"Sophtalmo"`.
 
 ## Testing installation
 ```
@@ -72,5 +71,5 @@ make test
 
 ## Short documentation
 
-`structuredOutput.py` is the entry point of the analysis. The OCR `.json` file is read to create a list of `DetectedText`, defined in `DetectedText.py`, with information on the read text and the bounding boxes. Then, data is extracted from this list using a specific reader (for example, look at a definition in `readers/alconEx500.py`). The reader rely on fuzzy string matching and relative positioning of bounding boxes (see `readers/search.py`).
+`command/generateStructuredOutput.py` is the entry point of the analysis. The OCR `.json` file is read to create a list of `DetectedText`, defined in `DetectedText.py`, with information on the read text and the bounding boxes. Then, data is extracted from this list using a specific reader (for example, look at a definition in `readers/alconEx500.py`). The reader rely on fuzzy string matching and relative positioning of bounding boxes (see `readers/search.py`).
 
