@@ -1,7 +1,8 @@
-from utils import getListOfJsonPaths
 import os
-import DetectedText
-import image
+
+from models import DetectedText
+from utils import imageManagement as imgm
+from utils.getListOfJsonPaths import getListOfJsonPaths
 
 
 def visualizeOcr(args):
@@ -23,15 +24,15 @@ def processFile(inputPath, args):
     allDetectedText = DetectedText.fromFile(f"{inputPath}.json")
 
     # Generate image with detected text
-    im = image.generateFromOcrData(
+    im = imgm.generateFromOcrData(
         f"{inputPath}.png", allDetectedText, verbose=args.verbose
     )
 
     # Save image
     if args.output_dir is not None:
         outputPath = os.path.join(args.output_dir, inputPath)
-        image.save(im, f"{outputPath}_all.png")
+        imgm.save(im, f"{outputPath}_all.png")
 
     # Show image
     if args.display_images:
-        image.show(im)
+        imgm.show(im)

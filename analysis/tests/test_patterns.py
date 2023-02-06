@@ -1,5 +1,5 @@
-from readers import patterns
 import regex
+from readerScripts import patterns
 
 
 def routine(pattern, string, groups=None):

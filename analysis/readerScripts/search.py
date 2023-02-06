@@ -1,5 +1,6 @@
-import regex
 import config
+import regex
+from models.Candidate import Candidate
 
 
 def fuzzySearch(pattern, string, errorMax):
@@ -24,16 +25,6 @@ def fuzzySearch(pattern, string, errorMax):
     errors = sum(match.fuzzy_counts)
 
     return errors, match
-
-
-class Candidate:
-    """Container for DetectedText instance and fuzzySearch result"""
-
-    def __init__(self, detectedText, errors, regexMatch, regionSearched=None):
-        self.detectedText = detectedText
-        self.errors = errors
-        self.regexMatch = regexMatch
-        self.regionSearched = regionSearched
 
 
 def string(detectedTextList, pattern, region=None, nCandidates=1):

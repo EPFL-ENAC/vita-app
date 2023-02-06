@@ -1,5 +1,5 @@
 import config
-from readers import search
+from readerScripts import search
 
 
 class Reader:

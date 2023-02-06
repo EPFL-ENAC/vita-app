@@ -1,4 +1,4 @@
-from readers import search
+from readerScripts import search
 
 
 def testSubstitution():

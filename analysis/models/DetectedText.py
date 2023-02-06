@@ -1,5 +1,6 @@
 import json
-from BoundingBox import BoundingBox
+
+from models.BoundingBox import BoundingBox
 
 
 class DetectedText:

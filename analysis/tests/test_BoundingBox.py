@@ -1,4 +1,5 @@
-from BoundingBox import BoundingBox, Point
+from models.BoundingBox import BoundingBox
+from models.Point import Point
 
 
 def testBarycenter():
