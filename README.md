@@ -45,19 +45,19 @@ Retreive the OCR files `xxx.json` and `xxx.png` from the iOS device and put them
 
 ```
 cd analysis
-poetry run python3 main.py visualize-ocr path_to.json --display-images --o outputs/
+poetry run python3 main.py visualize-ocr path_to.json --display-images -o outputs/
 ```
 Shows the picture overlaid with detected OCR text and saves it in the `outputs` directory, following the same tree structure from as `path_to` (outputs will be in `outputs/path_to...`).
 
 Multiple files can be processed at once:
 ```
-poetry run python3 main.py visualize-ocr path_to_directory/ --o outputs/
+poetry run python3 main.py visualize-ocr path_to_directory/ -o outputs/
 ```
 
 ## Structured output
 
 ```
-poetry run python3 main.py gen-struct-out path_to.json [-f software] --display-images --o outputs/
+poetry run python3 main.py gen-struct-out path_to.json [-f software] --display-images -o outputs/
 ```
 An image displaying the useful fields is shown and a `.csv` file is written in the `outputs` directory.
 Similarly to visualizing OCR output, Multiple files can be processed at once.
@@ -71,5 +71,5 @@ make test
 
 ## Short documentation
 
-`command/generateStructuredOutput.py` is the entry point of the analysis. The OCR `.json` file is read to create a list of `DetectedText`, defined in `DetectedText.py`, with information on the read text and the bounding boxes. Then, data is extracted from this list using a specific reader (for example, look at a definition in `readers/alconEx500.py`). The reader rely on fuzzy string matching and relative positioning of bounding boxes (see `readers/search.py`).
+`commands/generateStructuredOutput.py` is the entry point of the analysis. The OCR `.json` file is read to create a list of `DetectedText`, defined in `models/DetectedText.py`, with information on the read text and the bounding boxes. Then, data is extracted from this list using a specific reader (for example, look at a definition in `readers/alconEx500.py`). The reader rely on fuzzy string matching and relative positioning of bounding boxes (see `readerScripts/search.py`).
 
