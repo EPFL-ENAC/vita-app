@@ -8,7 +8,9 @@ def findBestReader(detectedTextList):
     bestReader = None
 
     for format in formats:
-        candidates = search.string(detectedTextList, format.distinctivePattern)
+        candidates = search.searchString(
+            detectedTextList, format.distinctivePattern
+        )
         if len(candidates) == 0:
             continue
         if candidates[0].errors < bestError:

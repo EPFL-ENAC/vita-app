@@ -22,7 +22,7 @@ class Reader:
                 newData, bestRef, candidates, _ = searchDataRelative(
                     refs,
                     field.keys,
-                    search.stringOnRight,
+                    search.searchStringOnRight,
                     detectedTextList,
                     field.pattern,
                     field.regionWidth,
@@ -34,7 +34,7 @@ class Reader:
                 newData, bestRef, candidates, _ = searchDataRelative(
                     refs,
                     field.keys,
-                    search.stringBelow,
+                    search.searchStringBelow,
                     detectedTextList,
                     field.pattern,
                     field.regionHeight,
@@ -46,7 +46,7 @@ class Reader:
                 newData, bestRef, candidates, _ = searchDataRelative(
                     refs,
                     field.keys,
-                    search.stringRelative,
+                    search.searchStringRelative,
                     detectedTextList,
                     field.pattern,
                     field.regionRelative,
@@ -58,7 +58,7 @@ class Reader:
                 bestRef = None
                 newData, candidates, _ = searchData(
                     field.keys,
-                    search.string,
+                    search.searchString,
                     detectedTextList,
                     field.pattern,
                     field.region,

@@ -12,8 +12,8 @@ def testBarycenter():
 
 def testContains():
     bbox = BoundingBox.fromBounds(0, 2, 0, 2)
-    assert bbox.contains(Point(1, 1))
-    assert not bbox.contains(Point(-1, 1))
-    assert not bbox.contains(Point(1, -1))
-    assert not bbox.contains(Point(3, 1))
-    assert not bbox.contains(Point(1, 3))
+    assert bbox.containsPoint(Point(1, 1))
+    assert not bbox.containsPoint(Point(-1, 1))
+    assert not bbox.containsPoint(Point(1, -1))
+    assert not bbox.containsPoint(Point(3, 1))
+    assert not bbox.containsPoint(Point(1, 3))

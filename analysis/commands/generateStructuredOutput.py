@@ -29,17 +29,17 @@ def processFile(inputPath, args, desiredReader):
     print(f"Processing {inputPath}")
 
     # Import detected text from OCR output
-    allDetectedText = DetectedText.fromFile(f"{inputPath}.json")
+    allDetectedText = DetectedText.genListFromFile(f"{inputPath}.json")
 
     # Define used reader
-    if desiredReader is None:
-        # Find best reader
+    if desiredReader is not None:
+        reader = desiredReader
+    else:
+        # Find best reader for this file
         reader = findBestReader(allDetectedText)
         if reader is None:
             print(f"Could not find a matching reader for {inputPath}")
             return
-    else:
-        reader = desiredReader
 
     # Generate structured output
     data, filteredDetectedText, regions = reader.read(allDetectedText)
@@ -63,7 +63,7 @@ def processFile(inputPath, args, desiredReader):
     if args.output_dir is not None:
         outputPath = os.path.join(args.output_dir, inputPath)
         if im is not None:
-            imgm.save(im, f"{outputPath}_all.png")
+            imgm.save(im, f"{outputPath}_filtered.png")
         csvWriter.write(data, f"{outputPath}.csv")
 
     # Print data
