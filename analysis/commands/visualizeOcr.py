@@ -10,7 +10,11 @@ def visualizeOcr(args):
         print("No output method specified. Use -d or -o.")
         quit()
 
-    inputPaths = getListOfJsonPaths(args.path)
+    inputPaths = getListOfJsonPaths(args.path, removeExtension=True)
+    print(f"Found {len(inputPaths)} .json files:")
+    for filename in inputPaths:
+        print(f"{filename}.json")
+    print("")
 
     # Loop through all the .json files
     for inputPath in inputPaths:

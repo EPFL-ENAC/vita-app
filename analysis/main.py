@@ -2,7 +2,7 @@ import argparse
 
 from commands.generateStructuredOutput import generateStructuredOutput
 from commands.visualizeOcr import visualizeOcr
-from readers.lists import names as formatNames
+from readerScripts.listOfReaders import names as formatNames
 
 
 def main():

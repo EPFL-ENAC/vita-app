@@ -1,7 +1,7 @@
 import os
 
 
-def getListOfJsonPaths(pathIni):
+def getListOfJsonPaths(pathIni, removeExtension=False):
     paths = []
 
     # If the path is a file, put only this file in the list
@@ -21,12 +21,8 @@ def getListOfJsonPaths(pathIni):
         print("No .json files found in the specified path.")
         quit()
 
-    print(f"Found {len(paths)} .json files:")
-    for filename in paths:
-        print(filename)
-    print("")
-
     # Remove .json extension
-    paths = [os.path.splitext(f)[0] for f in paths]
+    if removeExtension:
+        paths = [os.path.splitext(f)[0] for f in paths]
 
     return paths

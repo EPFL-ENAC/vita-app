@@ -1,8 +1,8 @@
 import os
 
 from models import DetectedText
-from readers.lists import readers
 from readerScripts.findBestReader import findBestReader
+from readerScripts.listOfReaders import readers
 from utils import csvWriter
 from utils import imageManagement as imgm
 from utils.getListOfJsonPaths import getListOfJsonPaths
@@ -18,7 +18,11 @@ def generateStructuredOutput(args):
     else:
         desiredReader = None
 
-    inputPaths = getListOfJsonPaths(args.path)
+    inputPaths = getListOfJsonPaths(args.path, removeExtension=True)
+    print(f"Found {len(inputPaths)} .json files:")
+    for filename in inputPaths:
+        print(f"{filename}.json")
+    print("")
 
     # Loop through all the .json files
     for inputPath in inputPaths:
@@ -60,6 +64,7 @@ def processFile(inputPath, args, desiredReader):
         imgm.show(im)
 
     # Save
+    print("TATA", args.output_dir, inputPath)
     if args.output_dir is not None:
         outputPath = os.path.join(args.output_dir, inputPath)
         if im is not None:

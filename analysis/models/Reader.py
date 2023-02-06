@@ -1,12 +1,16 @@
 import config
+from models.Field import FieldBelow, FieldOnRight, FieldRelative, fieldFromConf
 from readerScripts import search
 
 
 class Reader:
-    def __init__(self, name, distinctivePattern, fields):
-        self.name = name
-        self.distinctivePattern = distinctivePattern
-        self.fields = fields
+    def __init__(self, conf):
+        self.name = conf["name"]
+        self.distinctivePattern = conf["distinctivePattern"]
+        self.fields = []
+
+        for fieldConf in conf["fields"]:
+            self.fields.append(fieldFromConf(fieldConf))
 
     def read(self, detectedTextList):
         """Build data from detected texts"""
@@ -17,52 +21,10 @@ class Reader:
         regions = []
 
         for field in self.fields:
-            if field.onRightof is not None:
-                refs = fieldCandidates[field.onRightof]
-                newData, bestRef, candidates, _ = searchDataRelative(
-                    refs,
-                    field.keys,
-                    search.searchStringOnRight,
-                    detectedTextList,
-                    field.pattern,
-                    field.regionWidth,
-                    field.nCandidates,
-                )
-
-            elif field.below is not None:
-                refs = fieldCandidates[field.below]
-                newData, bestRef, candidates, _ = searchDataRelative(
-                    refs,
-                    field.keys,
-                    search.searchStringBelow,
-                    detectedTextList,
-                    field.pattern,
-                    field.regionHeight,
-                    field.nCandidates,
-                )
-
-            elif field.relativeTo is not None:
-                refs = fieldCandidates[field.relativeTo]
-                newData, bestRef, candidates, _ = searchDataRelative(
-                    refs,
-                    field.keys,
-                    search.searchStringRelative,
-                    detectedTextList,
-                    field.pattern,
-                    field.regionRelative,
-                    nCandidates=field.nCandidates,
-                    includeReference=True,
-                )
-
-            else:  # Non-relative field
-                bestRef = None
-                newData, candidates, _ = searchData(
-                    field.keys,
-                    search.searchString,
-                    detectedTextList,
-                    field.pattern,
-                    field.region,
-                )
+            # Extract data and candidates
+            newData, bestRef, candidates = getDataFromField(
+                field, fieldCandidates, detectedTextList
+            )
 
             # Populate filteredDetectedText
             for candidate in candidates:
@@ -94,6 +56,57 @@ class Reader:
             data.extend(newData)
 
         return data, list(filteredDetectedText), regions
+
+
+def getDataFromField(field, fieldCandidates, detectedTextList):
+    if isinstance(field, FieldOnRight):
+        refs = fieldCandidates[field.onRightof]
+        newData, bestRef, candidates, _ = searchDataRelative(
+            refs,
+            field.keys,
+            search.searchStringOnRight,
+            detectedTextList,
+            field.pattern,
+            field.regionWidth,
+            field.nCandidates,
+        )
+
+    elif isinstance(field, FieldBelow):
+        refs = fieldCandidates[field.below]
+        newData, bestRef, candidates, _ = searchDataRelative(
+            refs,
+            field.keys,
+            search.searchStringBelow,
+            detectedTextList,
+            field.pattern,
+            field.regionHeight,
+            field.nCandidates,
+        )
+
+    elif isinstance(field, FieldRelative):
+        refs = fieldCandidates[field.relativeTo]
+        newData, bestRef, candidates, _ = searchDataRelative(
+            refs,
+            field.keys,
+            search.searchStringRelative,
+            detectedTextList,
+            field.pattern,
+            field.regionRelative,
+            nCandidates=field.nCandidates,
+            includeReference=True,
+        )
+
+    else:  # Non-relative field
+        bestRef = None
+        newData, candidates, _ = searchData(
+            field.keys,
+            search.searchString,
+            detectedTextList,
+            field.pattern,
+            field.region,
+        )
+
+    return newData, bestRef, candidates
 
 
 def searchData(keys, searchFunc, *args, **kwargs):
