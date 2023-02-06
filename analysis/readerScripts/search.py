@@ -27,7 +27,7 @@ def fuzzySearch(pattern, string, errorMax):
     return errors, match
 
 
-def string(detectedTextList, pattern, region=None, nCandidates=1):
+def searchString(detectedTextList, pattern, region=None, nCandidates=1):
     """Searches for a string in all provided detected texts
 
     Args
@@ -63,7 +63,7 @@ def string(detectedTextList, pattern, region=None, nCandidates=1):
     return candidates[:nCandidates]
 
 
-def stringRelative(
+def searchStringRelative(
     reference,
     detectedTextList,
     pattern,
@@ -116,10 +116,10 @@ def stringRelative(
         cropped.text = cropped.text[reference.regexMatch.span()[1] :]
         detectedTextList.append(cropped)
 
-    return string(detectedTextList, pattern, region, nCandidates)
+    return searchString(detectedTextList, pattern, region, nCandidates)
 
 
-def stringOnRight(
+def searchStringOnRight(
     reference, detectedTextList, pattern, regionWidth=None, nCandidates=1
 ):
     """Searches for a string on the right of a reference
@@ -150,7 +150,7 @@ def stringOnRight(
     region.bottomRight.x += addedWidth
     region.topRight.x += addedWidth
 
-    return stringRelative(
+    return searchStringRelative(
         reference,
         detectedTextList,
         pattern,
@@ -161,7 +161,7 @@ def stringOnRight(
     )
 
 
-def stringBelow(
+def searchStringBelow(
     reference, detectedTextList, pattern, regionHeight=1, nCandidates=1
 ):
     """Searches for a string below a reference
@@ -191,7 +191,7 @@ def stringBelow(
     region.bottomLeft.y -= (regionHeight - 1) * lineHeight
     region.bottomRight.y -= (regionHeight - 1) * lineHeight
 
-    return stringRelative(
+    return searchStringRelative(
         reference,
         detectedTextList,
         pattern,

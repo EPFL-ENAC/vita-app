@@ -6,6 +6,9 @@ from models.BoundingBox import BoundingBox
 class DetectedText:
     """Container for text and bounding box
 
+    Assumes that the bounding box's system of coordinates has its origin at
+    the bottom left corner of the image/screen.
+
     Args:
         text (string)
         bbox (BoundingBox)
@@ -39,7 +42,7 @@ class DetectedText:
         return DetectedText(data["text"], BoundingBox.fromData(data["bbox"]))
 
 
-def fromFile(filename):
+def genListFromFile(filename):
     # Read JSON input
     f = open(filename)
     data = json.load(f)

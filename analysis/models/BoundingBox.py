@@ -34,7 +34,7 @@ class BoundingBox:
 
         return center
 
-    def contains(self, point):
+    def containsPoint(self, point):
         """Check if point is inside the bounding box
 
         Note: Assumes that boxes are rectangular and not rotated, to simplify

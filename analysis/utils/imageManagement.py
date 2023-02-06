@@ -19,6 +19,9 @@ defaultFontSize = 12
 def toPixels(point, im):
     """Conversion helper function
 
+    Note that the origin is at the top left corner of the image (y axis must
+    be inverted).
+
     Args:
         point (Point): Object with coordinates ranging from 0 to 1
         im (Image)

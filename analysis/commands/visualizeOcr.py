@@ -21,7 +21,7 @@ def processFile(inputPath, args):
     print(f"Processing {inputPath}")
 
     # Import detected text from OCR output
-    allDetectedText = DetectedText.fromFile(f"{inputPath}.json")
+    allDetectedText = DetectedText.genListFromFile(f"{inputPath}.json")
 
     # Generate image with detected text
     im = imgm.generateFromOcrData(
