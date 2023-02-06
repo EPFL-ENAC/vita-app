@@ -47,7 +47,7 @@ def searchString(detectedTextList, pattern, region=None, nCandidates=1):
     for detectedText in detectedTextList:
         if region is not None:
             center = detectedText.bbox.getBarycenter()
-            if not region.contains(center):
+            if not region.containsPoint(center):
                 continue
 
         error, regexMatch = fuzzySearch(
