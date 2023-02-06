@@ -1,8 +1,7 @@
-from readers.Reader import Reader
-from readers.Field import Field
-from readers import patterns
-from BoundingBox import BoundingBox
-
+from models.BoundingBox import BoundingBox
+from models.Field import Field
+from models.Reader import Reader
+from readerScripts import patterns
 
 distinctivePattern = "EX500.+Treatment Report"
 

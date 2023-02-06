@@ -1,6 +1,6 @@
-from readers import search
-from readers.list import formats
 import config
+from readers.lists import formats
+from readerScripts import search
 
 
 def findBestReader(detectedTextList):

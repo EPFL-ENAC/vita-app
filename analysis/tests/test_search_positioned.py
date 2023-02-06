@@ -1,8 +1,7 @@
 import regex
-from readers import search
-from DetectedText import DetectedText
-from BoundingBox import BoundingBox
-
+from models.BoundingBox import BoundingBox
+from models.DetectedText import DetectedText
+from readerScripts import search
 
 pattern1 = "abcde"
 pattern2 = "fghij"

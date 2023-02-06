@@ -1,10 +1,11 @@
-from utils import getListOfJsonPaths
-import DetectedText
-import image
-from readers.findBestReader import findBestReader
-from readers.list import names as readers
-import csvWriter
 import os
+
+from models import DetectedText
+from readers.lists import readers
+from readerScripts.findBestReader import findBestReader
+from utils import csvWriter
+from utils import imageManagement as imgm
+from utils.getListOfJsonPaths import getListOfJsonPaths
 
 
 def generateStructuredOutput(args):
@@ -45,7 +46,7 @@ def processFile(inputPath, args, desiredReader):
 
     # Generate image with detected text
     if args.generate_images or args.display_images:
-        im = image.generateFromOcrData(
+        im = imgm.generateFromOcrData(
             f"{inputPath}.png",
             filteredDetectedText,
             regions,
@@ -56,13 +57,13 @@ def processFile(inputPath, args, desiredReader):
 
     # Show image
     if args.display_images:
-        image.show(im)
+        imgm.show(im)
 
     # Save
     if args.output_dir is not None:
         outputPath = os.path.join(args.output_dir, inputPath)
         if im is not None:
-            image.save(im, f"{outputPath}_all.png")
+            imgm.save(im, f"{outputPath}_all.png")
         csvWriter.write(data, f"{outputPath}.csv")
 
     # Print data
