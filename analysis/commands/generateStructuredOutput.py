@@ -64,7 +64,6 @@ def processFile(inputPath, args, desiredReader):
         imgm.show(im)
 
     # Save
-    print("TATA", args.output_dir, inputPath)
     if args.output_dir is not None:
         outputPath = os.path.join(args.output_dir, inputPath)
         if im is not None:
