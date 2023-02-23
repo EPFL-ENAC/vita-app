@@ -76,8 +76,3 @@ poetry run python main.py compare reference file
 ```
 make test
 ```
-
-## Short documentation
-
-`commands/generateStructuredOutput.py` is the entry point of the analysis. The OCR `.json` file is read to create a list of `DetectedText`, defined in `models/DetectedText.py`, with information on the read text and the bounding boxes. Then, data is extracted from this list using a specific reader (for example, look at a definition in `readers/alconEx500.py`). The reader rely on fuzzy string matching and relative positioning of bounding boxes (see `readerScripts/search.py`).
-
