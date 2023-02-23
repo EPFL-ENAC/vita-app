@@ -1,7 +1,7 @@
 import sys
-import pandas as pd
-import Levenshtein
 
+import Levenshtein
+import pandas as pd
 
 if len(sys.argv) != 3:
     print("\nUsage: python3 compare.py reference file")
@@ -24,6 +24,7 @@ def load(path):
     else:
         print("File format not supported")
         quit()
+
 
 reference = load(referencePath)
 file = load(filePath)

@@ -1,5 +1,6 @@
 import argparse
 
+from commands.compare import compare
 from commands.generateStructuredOutput import generateStructuredOutput
 from commands.visualizeOcr import visualizeOcr
 from readerScripts.listOfReaders import names as formatNames
@@ -12,6 +13,8 @@ def main():
         visualizeOcr(args)
     elif args.command == "gen-struct-out":
         generateStructuredOutput(args)
+    elif args.command == "compare":
+        compare(args)
 
 
 def getArgs():
@@ -25,6 +28,7 @@ def getArgs():
 
     defineVizSubparser(commandParsers)
     defineGenSubparser(commandParsers)
+    defineCompareSubparser(commandParsers)
 
     args = parser.parse_args()
     return args
@@ -39,7 +43,7 @@ def defineVizSubparser(commandParsers):
     the original pictures. Original OCR data consists of pairs of .json and
     .png files."""
 
-    addSharedArgs(vizParser)
+    addVizGenSharedArgs(vizParser)
 
 
 def defineGenSubparser(commandParsers):
@@ -66,10 +70,10 @@ def defineGenSubparser(commandParsers):
         help="""generate images (takes longer)""",
     )
 
-    addSharedArgs(genParser)
+    addVizGenSharedArgs(genParser)
 
 
-def addSharedArgs(parser):
+def addVizGenSharedArgs(parser):
     parser.add_argument(
         "path",
         help="""path to json file or directory. If path is a directory, all the
@@ -92,6 +96,24 @@ def addSharedArgs(parser):
     )
 
     parser.add_argument("-v", "--verbose", action="store_true")
+
+
+def defineCompareSubparser(commandParsers):
+    compareParser = commandParsers.add_parser(
+        "compare", help="compare structured output with reference"
+    )
+
+    compareParser.description = """Compare two tables (.csv, .xls, or .xlsx) of
+        structured output."""
+
+    compareParser.add_argument("reference", help="""path to reference file""")
+
+    compareParser.add_argument(
+        "file",
+        help="""path to file to compare, e.g. output of gen-struct-out""",
+    )
+
+    compareParser.add_argument("-q", "--quiet", action="store_true")
 
 
 if __name__ == "__main__":
