@@ -68,9 +68,9 @@ If `software` is not specified, the best matching software will be automatically
 
 An output `.csv` file can be compared to a reference table file using the command
 ```
-python3 compare.py reference file
+poetry run python main.py compare reference file
 ```
-`reference` and `file` can be `.csv` or `.xlsx` files.
+`reference` and `file` can be `.csv`, `.xls`, or `.xlsx` files.
 
 ## Testing installation
 ```
