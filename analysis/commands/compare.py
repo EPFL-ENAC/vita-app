@@ -1,10 +1,10 @@
 import Levenshtein
 import pandas as pd
 
-dateFormat = "%d/%m/%Y"
+date_format = "%d/%m/%Y"
 
 
-def loadTable(path):
+def load_table(path):
     if path.endswith(".csv"):
         return pd.DataFrame(pd.read_csv(path))
     elif path.endswith(".xls") or path.endswith(".xlsx"):
@@ -15,13 +15,13 @@ def loadTable(path):
 
 
 def compare(args):
-    reference = loadTable(args.reference)
-    file = loadTable(args.file)
+    reference = load_table(args.reference)
+    file = load_table(args.file)
     verbose = not args.quiet
-    totalError = 0
-    totalCharCount = 0
-    wrongFields = 0
-    fieldCount = 0
+    total_error = 0
+    total_char_count = 0
+    wrong_fields = 0
+    field_count = 0
 
     # Compare each entry
     for col in reference:
@@ -32,31 +32,31 @@ def compare(args):
 
         target = reference[col][0]
         read = file[col][0]
-        fieldEmpty, newCharCount, error = compareEntry(
+        field_empty, new_char_count, error = compare_entry(
             col, target, read, verbose
         )
 
-        if fieldEmpty:
+        if field_empty:
             continue
 
-        fieldCount += 1
+        field_count += 1
         if error > 0:
-            wrongFields += 1
-            totalError += error
+            wrong_fields += 1
+            total_error += error
 
-        totalCharCount += newCharCount
+        total_char_count += new_char_count
 
     if verbose:
         print(
-            f"\nTotal error / number of characters: {totalError} /"
-            f" {totalCharCount}"
+            f"\nTotal error / number of characters: {total_error} /"
+            f" {total_char_count}"
         )
-        print(f"Wrong fields: {wrongFields} / {fieldCount} \n")
+        print(f"Wrong fields: {wrong_fields} / {field_count} \n")
 
-    return totalError, totalCharCount, wrongFields, fieldCount
+    return total_error, total_char_count, wrong_fields, field_count
 
 
-def compareEntry(col, target, read, verbose=False):
+def compare_entry(col, target, read, verbose=False):
     match col:
         # Reformat last name (full caps in some documents)
         case "Last name":
@@ -66,9 +66,9 @@ def compareEntry(col, target, read, verbose=False):
         # Format dates
         case "DOB" | "Date of consultation":
             if type(target) == pd.Timestamp:
-                target = target.strftime(dateFormat)
+                target = target.strftime(date_format)
             if type(read) == pd.Timestamp:
-                read = read.strftime(dateFormat)
+                read = read.strftime(date_format)
 
         # Format floats that have a comma instead of a dot
         case _:
@@ -78,8 +78,8 @@ def compareEntry(col, target, read, verbose=False):
                 pass
 
     # Count characters in read field
-    newChars = len(str(target))
-    if pd.isna(target) or newChars == 0:  # Empty field
+    new_chars = len(str(target))
+    if pd.isna(target) or new_chars == 0:  # Empty field
         return True, 0, 0
 
     # Maching
@@ -89,7 +89,7 @@ def compareEntry(col, target, read, verbose=False):
                 print(f"{col}:")
             else:
                 print(f"{col}: {target}")
-        return False, newChars, 0
+        return False, new_chars, 0
 
     # Not matching
     else:
@@ -102,4 +102,4 @@ def compareEntry(col, target, read, verbose=False):
         error = Levenshtein.distance(target, read)
         if verbose:
             print(f"{col}: {read} (expected '{target}', {error} errors)")
-        return False, newChars, error
+        return False, new_chars, error

@@ -1,6 +1,6 @@
 # Summarized inner working
 
-`commands/generateStructuredOutput.py` is the entry point of the analysis. The OCR `.json` file is read to create a list of `DetectedText`, defined in `models/DetectedText.py`, with information on the read text and the bounding boxes. Then, data is extracted from this list using a specific reader (for example, look at a definition in `readers/alconEx500.json`). The reader rely on fuzzy string matching and relative positioning of bounding boxes (see `readerScripts/search.py`).
+`commands/gen_struct_out.py` is the entry point of the analysis. The OCR `.json` file is read to create a list of `DetectedText`, defined in `models/detected_text.py`, with information on the read text and the bounding boxes. Then, data is extracted from this list using a specific reader (for example, look at a definition in `readers/alcon_ex_500.json`). The reader rely on fuzzy string matching and relative positioning of bounding boxes (see `reader_scripts/search.py`).
 
 
 # Software description file
@@ -9,13 +9,13 @@ The layout of documents rendered by any software can be described in a `.json` f
 ```
 {
 	"name": string,
-	"distinctivePattern": regex,
+	"distinctive_pattern": regex,
 	"fields": [
 		...
 	]
 }
 ```
-The `name` will be used to identify the software when using the `gen-struct-out` command. `distinctivePattern` is a regex string uniquely identifying a document produced by the software.
+The `name` will be used to identify the software when using the `gen-struct-out` command. `distinctive_pattern` is a regex string uniquely identifying a document produced by the software.
 
 ## Fields description
 
@@ -39,12 +39,12 @@ To create entries from the capture groups of a field's regex, the names of the e
 	"keys": [string, string, ...],
 }
 ```
-By default, each key will be attributed to the regex capture groups in their appearing order. To change the capture groups corresponding to each key, add a `dataOrder` value (a list of integers). For example:
+By default, each key will be attributed to the regex capture groups in their appearing order. To change the capture groups corresponding to each key, add a `data_order` value (a list of integers). For example:
 ```
 {
 	...
 	"keys": ["alpha", "bravo", "charlie"],
-	"dataOrder": [1, 2, 0]
+	"data_order": [1, 2, 0]
 }
 ```
 will add the entries `alpha: capture #1`, `bravo: capture #2`, `charlie: capture #0`.
@@ -69,7 +69,7 @@ To find a field positioned relatively to another, use the following syntax:
 ```
 {
 	...
-	"relativeTo": referenceName,
+	"relative_to": reference_name,
 	"region": [xmin, xmax, ymin, ymax]
 }
 ```
@@ -79,18 +79,18 @@ Simplified syntaxes exist to define fields located on the right or below another
 ```
 {
 	...
-	"onRightof": referenceName,
-	"regionWidth": number
+	"on_right_of": reference_name,
+	"region_width": number
 },
 {
 	...
-	"below": referenceName,
-	"regionHeight": number
+	"below": reference_name,
+	"region_height": number
 }
 ```
-`regionWidth` and `regionHeight` are specified in units of the height of the reference's bounding box. If `regionWidth` is not specified, the whole horizontal space on the right of the reference is searched. If `regionHeight` is not specified, it is set to 1.
+`region_width` and `region_height` are specified in units of the height of the reference's bounding box. If `region_width` is not specified, the whole horizontal space on the right of the reference is searched. If `region_height` is not specified, it is set to 1.
 
 
 ## Regex patterns
 
-Placeholders in the form of `{pattern.xxx}` may be used to avoid repetitions of regex patterns. Patterns are defined in `readerScripts/patterns.py`. Other common patterns may be added there.
+Placeholders in the form of `{pattern.xxx}` may be used to avoid repetitions of regex patterns. Patterns are defined in `reader_scripts/patterns.py`. Other common patterns may be added there.
