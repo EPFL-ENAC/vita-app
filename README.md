@@ -23,7 +23,7 @@ _Note: The application layout is built using UIKit._
 
 # 🧮 Structured text analysis
 
-The analysis of the OCR text is performed by the script `analysis/structuredOutput.py`.
+The analysis of the OCR text is performed by the script `analysis/main.py`.
 
 ## Requirements
 

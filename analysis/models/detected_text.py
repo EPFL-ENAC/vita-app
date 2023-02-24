@@ -1,6 +1,6 @@
 import json
 
-from models.BoundingBox import BoundingBox
+from models.bounding_box import BoundingBox
 
 
 class DetectedText:
@@ -24,33 +24,33 @@ class DetectedText:
         return self.bbox.points
 
     @property
-    def lineHeight(self):
+    def line_height(self):
         """Returns the bounding box height in 0 to 1 range"""
-        return self.bbox.topLeft.y - self.bbox.bottomLeft.y
+        return self.bbox.top_left.y - self.bbox.bottom_left.y
 
     @property
-    def textWidth(self):
+    def text_width(self):
         """Returns the bounding box width in 0 to 1 range"""
-        return self.bbox.bottomRight.x - self.bbox.bottomLeft.x
+        return self.bbox.bottom_right.x - self.bbox.bottom_left.x
 
     def copy(self):
         return DetectedText(self.text, self.bbox.copy())
 
     @staticmethod
-    def fromData(data):
+    def from_data(data):
         """Creates new instance from dictionnary"""
-        return DetectedText(data["text"], BoundingBox.fromData(data["bbox"]))
+        return DetectedText(data["text"], BoundingBox.from_data(data["bbox"]))
 
 
-def genListFromFile(filename):
+def gen_list_from_file(filename):
     # Read JSON input
     f = open(filename)
     data = json.load(f)
     f.close()
 
-    allDetectedText = []
+    all_detected_text = []
 
     for d in data:
-        allDetectedText.append(DetectedText.fromData(d))
+        all_detected_text.append(DetectedText.from_data(d))
 
-    return allDetectedText
+    return all_detected_text

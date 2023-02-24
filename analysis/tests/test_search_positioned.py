@@ -1,42 +1,44 @@
 import regex
-from models.BoundingBox import BoundingBox
-from models.DetectedText import DetectedText
-from readerScripts import search
+from models.bounding_box import BoundingBox
+from models.detected_text import DetectedText
+from reader_scripts import search
 
 pattern1 = "abcde"
 pattern2 = "fghij"
 
-reference = DetectedText(pattern1, BoundingBox.fromBounds(0, 1, 1, 2))
-topRight = DetectedText(pattern2, BoundingBox.fromBounds(1, 2, 2, 3))
-right = DetectedText(pattern2, BoundingBox.fromBounds(1, 2, 1, 2))
-bottomRight = DetectedText(pattern2, BoundingBox.fromBounds(1, 2, 0, 1))
-below = DetectedText(pattern2, BoundingBox.fromBounds(0, 1, 0, 1))
+reference = DetectedText(pattern1, BoundingBox.from_bounds(0, 1, 1, 2))
+top_right = DetectedText(pattern2, BoundingBox.from_bounds(1, 2, 2, 3))
+right = DetectedText(pattern2, BoundingBox.from_bounds(1, 2, 1, 2))
+bottom_right = DetectedText(pattern2, BoundingBox.from_bounds(1, 2, 0, 1))
+below = DetectedText(pattern2, BoundingBox.from_bounds(0, 1, 0, 1))
 
-detectedTextList = [reference, topRight, right, bottomRight, below]
+detected_text_list = [reference, top_right, right, bottom_right, below]
 
-dummyMatch = regex.match("", "")
-reference = search.Candidate(reference, 0, dummyMatch)
+dummy_match = regex.match("", "")
+reference = search.Candidate(reference, 0, dummy_match)
 
 
-def testStringOnSame():
-    candidate = search.searchStringOnRight(
-        reference, detectedTextList, pattern1, 1
+def test_string_on_same():
+    candidate = search.search_string_on_right(
+        reference, detected_text_list, pattern1, 1
     )
     assert len(candidate) != 0
-    assert candidate[0].detectedText.text == reference.detectedText.text
-    # detectedText themselves are different because candidate.detextedText is
-    # rewritten in search.stringOnRight
+    assert candidate[0].detected_text.text == reference.detected_text.text
+    # detected_text themselves are different because candidate.detexted_text is
+    # rewritten in search.string_on_right
 
 
-def testStringOnRight():
-    candidate = search.searchStringOnRight(
-        reference, detectedTextList, pattern2, 1
+def test_string_on_right():
+    candidate = search.search_string_on_right(
+        reference, detected_text_list, pattern2, 1
     )
     assert len(candidate) != 0
-    assert candidate[0].detectedText is right
+    assert candidate[0].detected_text is right
 
 
-def testStringBelow():
-    candidate = search.searchStringBelow(reference, detectedTextList, pattern2)
+def test_string_below():
+    candidate = search.search_string_below(
+        reference, detected_text_list, pattern2
+    )
     assert len(candidate) != 0
-    assert candidate[0].detectedText is below
+    assert candidate[0].detected_text is below

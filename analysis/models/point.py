@@ -10,6 +10,6 @@ class Point:
         return Point(self.x, self.y)
 
     @staticmethod
-    def fromData(data):
+    def from_data(data):
         """Creates new instance from dictionnary"""
         return Point(data["x"], data["y"])

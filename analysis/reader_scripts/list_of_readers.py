@@ -2,38 +2,38 @@
 
 import json
 
-from models.Reader import Reader
-from readerScripts import patterns
-from utils.getListOfJsonPaths import getListOfJsonPaths
+from models.reader import Reader
+from reader_scripts import patterns
+from utils.get_list_of_json_paths import get_list_of_json_paths
 
 
-def loadReaders():
-    paths = getListOfJsonPaths("readers")
+def load_readers():
+    paths = get_list_of_json_paths("readers")
     readers = {}
 
     for path in paths:
         with open(path) as f:
-            readerConf = replacePatterns(json.load(f))
-            reader = Reader(readerConf)
+            reader_conf = replace_patterns(json.load(f))
+            reader = Reader(reader_conf)
             readers[reader.name] = reader
 
     return readers
 
 
-def replacePatterns(conf):
+def replace_patterns(conf):
     # Replace name and distinctivePattern
     for key, value in conf.items():
         if isinstance(value, str):
             conf[key] = conf[key].format(patterns=patterns)
 
     # Replace patterns in fields
-    for fieldConf in conf["fields"]:
-        for key, value in fieldConf.items():
+    for field_conf in conf["fields"]:
+        for key, value in field_conf.items():
             if isinstance(value, str):
-                fieldConf[key] = fieldConf[key].format(patterns=patterns)
+                field_conf[key] = field_conf[key].format(patterns=patterns)
 
     return conf
 
 
-readers = loadReaders()
+readers = load_readers()
 names = list(readers.keys())

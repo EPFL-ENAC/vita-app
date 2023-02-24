@@ -1,40 +1,40 @@
-from readerScripts import search
+from reader_scripts import search
 
 
-def testSubstitution():
+def test_substitution():
     pattern = "abcde"
     string = "x abyde x"
-    errors, regexMatch = search.fuzzySearch(pattern, string, 1)
+    errors, regex_match = search.fuzzy_search(pattern, string, 1)
 
-    assert regexMatch is not None
-    startIndex, endIndex = regexMatch.span()
+    assert regex_match is not None
+    start_index, end_index = regex_match.span()
 
     assert errors == 1
-    assert startIndex == 2
-    assert endIndex == 7
+    assert start_index == 2
+    assert end_index == 7
 
 
-def testInsertion():
+def test_insertion():
     pattern = "abcde"
     string = "x abcyde x"
-    errors, regexMatch = search.fuzzySearch(pattern, string, 1)
+    errors, regex_match = search.fuzzy_search(pattern, string, 1)
 
-    assert regexMatch is not None
-    startIndex, endIndex = regexMatch.span()
+    assert regex_match is not None
+    start_index, end_index = regex_match.span()
 
     assert errors == 1
-    assert startIndex == 2
-    assert endIndex == 8
+    assert start_index == 2
+    assert end_index == 8
 
 
-def testDeletion():
+def test_deletion():
     pattern = "abcde"
     string = "x abde x"
-    errors, regexMatch = search.fuzzySearch(pattern, string, 1)
+    errors, regex_match = search.fuzzy_search(pattern, string, 1)
 
-    assert regexMatch is not None
-    startIndex, endIndex = regexMatch.span()
+    assert regex_match is not None
+    start_index, end_index = regex_match.span()
 
     assert errors == 1
-    assert startIndex == 2
-    assert endIndex == 6
+    assert start_index == 2
+    assert end_index == 6

@@ -1,79 +1,79 @@
 import argparse
 
 from commands.compare import compare
-from commands.generateStructuredOutput import generateStructuredOutput
-from commands.visualizeOcr import visualizeOcr
-from readerScripts.listOfReaders import names as formatNames
+from commands.gen_struct_out import gen_struct_out
+from commands.visualize_ocr import visualize_ocr
+from reader_scripts.list_of_readers import names as format_names
 
 
 def main():
-    args = getArgs()
+    args = get_args()
 
     if args.command == "visualize-ocr":
-        visualizeOcr(args)
+        visualize_ocr(args)
     elif args.command == "gen-struct-out":
-        generateStructuredOutput(args)
+        gen_struct_out(args)
     elif args.command == "compare":
         compare(args)
 
 
-def getArgs():
+def get_args():
     parser = argparse.ArgumentParser()
 
     # Create subparsers for each command
-    commandParsers = parser.add_subparsers(
+    command_parsers = parser.add_subparsers(
         dest="command", help="command to run"
     )
-    commandParsers.required = True
+    command_parsers.required = True
 
-    defineVizSubparser(commandParsers)
-    defineGenSubparser(commandParsers)
-    defineCompareSubparser(commandParsers)
+    define_viz_subparser(command_parsers)
+    define_gen_subparser(command_parsers)
+    define_compare_subparser(command_parsers)
 
     args = parser.parse_args()
     return args
 
 
-def defineVizSubparser(commandParsers):
-    vizParser = commandParsers.add_parser(
+def define_viz_subparser(command_parsers):
+    viz_parser = command_parsers.add_parser(
         "visualize-ocr", help="visualize OCR data"
     )
 
-    vizParser.description = """Generate images with detected text overlaid on
+    viz_parser.description = """Generate images with detected text overlaid on
     the original pictures. Original OCR data consists of pairs of .json and
     .png files."""
 
-    addOcrProcessingSharedArgs(vizParser)
+    add_ocr_processing_shared_args(viz_parser)
 
 
-def defineGenSubparser(commandParsers):
-    genParser = commandParsers.add_parser(
+def define_gen_subparser(command_parsers):
+    gen_parser = command_parsers.add_parser(
         "gen-struct-out", help="generate structured output from OCR data"
     )
 
-    genParser.description = """Generate .csv files of strucured output and
+    gen_parser.description = """Generate .csv files of strucured output and
     images with detected text overlaid on the original pictures. Original OCR
     data consists of pairs of .json and .png files."""
 
-    genParser.add_argument(
+    gen_parser.add_argument(
         "-f",
         "--software",
-        choices=formatNames,
+        choices=format_names,
         help="""software on which OCR was performed. If not specified, the
         best matching software is automatically detected.""",
     )
 
-    genParser.add_argument(
+    gen_parser.add_argument(
         "-i",
         "--generate-images",
         action="store_true",
         help="""generate images (takes longer)""",
     )
 
-    addOcrProcessingSharedArgs(genParser)
+    add_ocr_processing_shared_args(gen_parser)
 
 
-def addOcrProcessingSharedArgs(parser):
+def add_ocr_processing_shared_args(parser):
     parser.add_argument(
         "path",
         help="""path to json file or directory. If path is a directory, all the
@@ -98,22 +98,22 @@ def addOcrProcessingSharedArgs(parser):
     parser.add_argument("-v", "--verbose", action="store_true")
 
 
-def defineCompareSubparser(commandParsers):
-    compareParser = commandParsers.add_parser(
+def define_compare_subparser(command_parsers):
+    compare_parser = command_parsers.add_parser(
         "compare", help="compare structured output with reference"
     )
 
-    compareParser.description = """Compare two tables (.csv, .xls, or .xlsx) of
-        structured output."""
+    compare_parser.description = """Compare two tables (.csv, .xls, or .xlsx)
+        of structured output."""
 
-    compareParser.add_argument("reference", help="""path to reference file""")
+    compare_parser.add_argument("reference", help="""path to reference file""")
 
-    compareParser.add_argument(
+    compare_parser.add_argument(
         "file",
         help="""path to file to compare, e.g. output of gen-struct-out""",
     )
 
-    compareParser.add_argument("-q", "--quiet", action="store_true")
+    compare_parser.add_argument("-q", "--quiet", action="store_true")
 
 
 if __name__ == "__main__":
