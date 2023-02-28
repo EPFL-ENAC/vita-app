@@ -15,14 +15,11 @@ class ViewController: UIViewController {
     private var ocrTextView = OcrTextView(frame: .zero, textContainer: nil)
     private var scanButton = ScanButton(frame: .zero)
     private var scanImageView = ScanImageView(frame: .zero)
-    private var ocrRequest = VNRecognizeTextRequest(completionHandler: nil)
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configure()
-        configureOCR()
     }
 
     
@@ -60,89 +57,6 @@ class ViewController: UIViewController {
         present(scanVC, animated: true)
     }
     
-    
-    private func saveImage(_ image: UIImage) {
-        // Save picture in local file system
-        guard let png = image.pngData() else {
-            print("Error: Could not get png data of image")
-            return
-        }
-        
-        do {
-            let dir = getSaveDirectory()
-            let path = dir.appendingPathComponent("\(filename.get()).png", isDirectory: false)
-            try png.write(to: path)
-            print("Picture saved successfully")
-        }
-        catch {
-            print("Error: could not save picture. \(error)")
-        }
-    }
-    
-    private func processImage(_ image: UIImage) {
-        guard let cgImage = image.cgImage else { return }
-
-        ocrTextView.text = ""
-        scanButton.isEnabled = false
-        
-        let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-        do {
-            try requestHandler.perform([self.ocrRequest])
-        } catch {
-            print(error)
-        }
-    }
-
-    
-    private func configureOCR() {
-        ocrRequest = VNRecognizeTextRequest { (request, error) in
-            guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
-        
-            // Text shown in interface
-            var ocrText = ""
-            // Data to be exported
-            var allDetected: [DetectedText] = []
-            
-            for observation in observations {
-                guard let topCandidate = observation.topCandidates(1).first else { return }
-                
-                ocrText += topCandidate.string + "\n"
-                var detectedText = DetectedText(text: topCandidate.string)
-                
-                // Create range for bounding box detection
-                let startIndex = topCandidate.string.startIndex
-                let endIndex = topCandidate.string.endIndex
-                let range = startIndex ..< endIndex
-                
-                do {
-                    let bbox: VNRectangleObservation = try topCandidate.boundingBox(for: range)!
-                    
-                    detectedText.bbox.bottomLeft  = Point(x: bbox.bottomLeft.x,  y: bbox.bottomLeft.y)
-                    detectedText.bbox.bottomRight = Point(x: bbox.bottomRight.x, y: bbox.bottomRight.y)
-                    detectedText.bbox.topLeft     = Point(x: bbox.topLeft.x,     y: bbox.topLeft.y)
-                    detectedText.bbox.topRight    = Point(x: bbox.topRight.x,    y: bbox.topRight.y)
-                } catch {
-                    print("Could not retrieve bounding box for text \(topCandidate.string)")
-                } // Cannot get bounding box
-                
-                allDetected.append(detectedText)
-            }
-            
-            DispatchQueue.main.async {
-                self.ocrTextView.text = ocrText
-                self.scanButton.isEnabled = true
-                
-                // Saving detected text into file text in local file system
-                let dir = getSaveDirectory()
-                let path = dir.appendingPathComponent("\(filename.get()).json", isDirectory: false)
-                exportJson(data: allDetected, to: path)
-            }
-        }
-        
-        ocrRequest.recognitionLevel = .accurate
-        ocrRequest.recognitionLanguages = ["en-US", "en-GB", "fr-FR"]
-        ocrRequest.usesLanguageCorrection = true
-    }
 }
 
 
@@ -153,11 +67,15 @@ extension ViewController: VNDocumentCameraViewControllerDelegate {
             return
         }
         
+        ocrTextView.text = ""
+        
         for i in 0 ..< scan.pageCount {
             let image = scan.imageOfPage(at: i)
-            scanImageView.image = image
-            filename.generate()
-            saveImage(image)
+            
+            // Show last picture on screen
+            if i == scan.pageCount - 1 {
+                scanImageView.image = image
+            }
             processImage(image)
         }
         

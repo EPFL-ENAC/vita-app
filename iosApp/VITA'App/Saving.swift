@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 func getSaveDirectory() -> URL {
@@ -14,22 +15,37 @@ func getSaveDirectory() -> URL {
 }
 
 
-/** Structure for filename generation */
-class Filename {
-    private var filename = ""
-    
-    func generate() {
-        let currentDate = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH-mm-ssSSS"
-        // force 24h format
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        filename = formatter.string(from: currentDate)
-    }
-    
-    func get() -> String {
-        return filename
-    }
+// TODO: keep track of last generated filename and check for uniqueness
+func generateNewFilename() -> String {
+    let currentDate = Date()
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH-mm-ssSSS"
+    // force 24h format
+    formatter.locale = Locale(identifier: "en_US_POSIX")
+    let filename = formatter.string(from: currentDate)
+    return filename
 }
 
-let filename = Filename()
+
+func generatePath(_ filename: String, _ fileExtension: String) -> URL {
+    let dir = getSaveDirectory()
+    let path = dir.appendingPathComponent("\(filename).\(fileExtension)", isDirectory: false)
+    return path
+}
+
+
+func saveImage(_ image: UIImage, _ path: URL) {
+    // Save picture in local file system
+    guard let png = image.pngData() else {
+        print("Error: Could not get png data of image")
+        return
+    }
+    
+    do {
+        try png.write(to: path)
+        print("Picture saved successfully")
+    }
+    catch {
+        print("Error: could not save picture. \(error)")
+    }
+}
