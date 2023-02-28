@@ -15,7 +15,7 @@ The layout of documents rendered by any software can be described in a `.json` f
 	]
 }
 ```
-The `name` will be used to identify the software when using the `gen-struct-out` command. `distinctivePattern` is a regex uniquely identifying a document produced by the software.
+The `name` will be used to identify the software when using the `gen-struct-out` command. `distinctivePattern` is a regex string uniquely identifying a document produced by the software.
 
 ## Fields description
 
@@ -27,7 +27,7 @@ A field must at least contain the following:
 	"pattern": regex
 }
 ```
-`name` is used as an identifier when creating other fields placed in relation to this one. `pattern` is a regex pattern which may contain capture groups.
+`name` is used as an identifier when creating other fields placed in relation to this one. `pattern` is a regex string which may contain capture groups.
 
 
 ### Adding entries in structured output
@@ -39,7 +39,7 @@ To create entries from the capture groups of a field's regex, the names of the e
 	"keys": [string, string, ...],
 }
 ```
-By default, each key will be attributed to the regex capture groups in their appearing order. To change the capture groups corresponding to each key, add a `dataOrder` value. For example:
+By default, each key will be attributed to the regex capture groups in their appearing order. To change the capture groups corresponding to each key, add a `dataOrder` value (a list of integers). For example:
 ```
 {
 	...
@@ -60,7 +60,7 @@ To look for a field in a specific region of the image, add a region:
 	region: [xmin, xmax, ymin, ymax]
 }
 ```
-Coordinates range from 0 to 1 and the origin is located at the bottom left (y axis pointing upward). Regions are drawn in the images rendered by the `gen-struct-out` command for verification purposes.
+Coordinates are floating point numbers ranging from 0 to 1. The origin is located at the bottom left (y axis pointing upward). Regions are drawn in the images rendered by the `gen-struct-out` command for verification purposes.
 
 
 ### Relative positioning

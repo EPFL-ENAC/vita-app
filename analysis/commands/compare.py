@@ -57,24 +57,25 @@ def compare(args):
 
 
 def compareEntry(col, target, read, verbose=False):
-    # Reformat last name (full caps in some documents)
-    if col == "Last name":
-        target = str(target).title()
-        read = str(read).title()
+    match col:
+        # Reformat last name (full caps in some documents)
+        case "Last name":
+            target = str(target).title()
+            read = str(read).title()
 
-    # Format dates
-    elif col == "DOB" or col == "Date of consultation":
-        if type(target) == pd.Timestamp:
-            target = target.strftime(dateFormat)
-        if type(read) == pd.Timestamp:
-            read = read.strftime(dateFormat)
+        # Format dates
+        case "DOB" | "Date of consultation":
+            if type(target) == pd.Timestamp:
+                target = target.strftime(dateFormat)
+            if type(read) == pd.Timestamp:
+                read = read.strftime(dateFormat)
 
-    # Format floats that have a comma instead of a dot
-    else:
-        try:
-            read = float(str(read).replace(",", "."))
-        except ValueError:
-            pass
+        # Format floats that have a comma instead of a dot
+        case _:
+            try:
+                read = float(str(read).replace(",", "."))
+            except ValueError:  # Cannot cast to float
+                pass
 
     # Count characters in read field
     newChars = len(str(target))

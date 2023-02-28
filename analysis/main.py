@@ -43,7 +43,7 @@ def defineVizSubparser(commandParsers):
     the original pictures. Original OCR data consists of pairs of .json and
     .png files."""
 
-    addVizGenSharedArgs(vizParser)
+    addOcrProcessingSharedArgs(vizParser)
 
 
 def defineGenSubparser(commandParsers):
@@ -70,10 +70,10 @@ def defineGenSubparser(commandParsers):
         help="""generate images (takes longer)""",
     )
 
-    addVizGenSharedArgs(genParser)
+    addOcrProcessingSharedArgs(genParser)
 
 
-def addVizGenSharedArgs(parser):
+def addOcrProcessingSharedArgs(parser):
     parser.add_argument(
         "path",
         help="""path to json file or directory. If path is a directory, all the
