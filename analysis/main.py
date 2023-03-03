@@ -41,7 +41,7 @@ def define_viz_subparser(command_parsers):
 
     viz_parser.description = """Generate images with detected text overlaid on
     the original pictures. Original OCR data consists of pairs of .json and
-    .png files."""
+    .jpg files."""
 
     add_ocr_processing_shared_args(viz_parser)
 
@@ -53,7 +53,7 @@ def define_gen_subparser(command_parsers):
 
     gen_parser.description = """Generate .csv files of strucured output and
     images with detected text overlaid on the original pictures. Original OCR
-    data consists of pairs of .json and .png files."""
+    data consists of pairs of .json and .jpg files."""
 
     gen_parser.add_argument(
         "-f",
