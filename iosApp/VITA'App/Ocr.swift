@@ -67,7 +67,7 @@ func processImage(_ image: UIImage) {
     guard let cgImage = image.cgImage else { return }
 
     let filename = generateNewFilename()
-    let imagePath = generatePath(filename, "png")
+    let imagePath = generatePath(filename, "jpg")
     let jsonPath = generatePath(filename, "json")
     saveImage(image, imagePath)
 

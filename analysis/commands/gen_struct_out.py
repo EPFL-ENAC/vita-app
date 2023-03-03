@@ -51,7 +51,7 @@ def process_file(input_path, args, desired_reader):
     # Generate image with detected text
     if args.generate_images or args.display_images:
         im = imgm.generate_from_ocr_data(
-            f"{input_path}.png",
+            f"{input_path}.jpg",
             filtered_detected_text,
             regions,
             verbose=args.verbose,
@@ -67,7 +67,7 @@ def process_file(input_path, args, desired_reader):
     if args.output_dir is not None:
         output_path = os.path.join(args.output_dir, input_path)
         if im is not None:
-            imgm.save(im, f"{output_path}_filtered.png")
+            imgm.save(im, f"{output_path}_filtered.jpg")
         csv_writer.write(data, f"{output_path}.csv")
 
     # Print data

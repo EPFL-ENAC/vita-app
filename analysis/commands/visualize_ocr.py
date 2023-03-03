@@ -29,13 +29,13 @@ def process_file(input_path, args):
 
     # Generate image with detected text
     im = imgm.generate_from_ocr_data(
-        f"{input_path}.png", all_detecteds_text, verbose=args.verbose
+        f"{input_path}.jpg", all_detecteds_text, verbose=args.verbose
     )
 
     # Save image
     if args.output_dir is not None:
         output_path = os.path.join(args.output_dir, input_path)
-        imgm.save(im, f"{output_path}_all.png")
+        imgm.save(im, f"{output_path}_all.jpg")
 
     # Show image
     if args.display_images:

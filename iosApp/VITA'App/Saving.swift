@@ -10,6 +10,9 @@ import Foundation
 import UIKit
 
 
+let JPEG_QUALITY = 0.8
+
+
 func getSaveDirectory() -> URL {
     return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 }
@@ -36,13 +39,13 @@ func generatePath(_ filename: String, _ fileExtension: String) -> URL {
 
 func saveImage(_ image: UIImage, _ path: URL) {
     // Save picture in local file system
-    guard let png = image.pngData() else {
-        print("Error: Could not get png data of image")
+    guard let jpg = image.jpegData(compressionQuality: JPEG_QUALITY) else {
+        print("Error: Could not get jpg data of image")
         return
     }
     
     do {
-        try png.write(to: path)
+        try jpg.write(to: path)
         print("Picture saved successfully")
     }
     catch {
