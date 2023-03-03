@@ -91,6 +91,18 @@ Simplified syntaxes exist to define fields located on the right or below another
 `region_width` and `region_height` are specified in units of the height of the reference's bounding box. If `region_width` is not specified, the whole horizontal space on the right of the reference is searched. If `region_height` is not specified, it is set to 1.
 
 
+### Matching multiple candidates
+
+If the text contained in one searched field is not unique, it may be needed to look for multiple occurrences of a single pattern by adding the following parameter:
+```
+{
+	...
+	"n_candidates": integer
+}
+```
+This is useful when searching for a field that will serve as a reference for other relatively positioned fields.
+
+
 ## Regex patterns
 
 Placeholders in the form of `{pattern.xxx}` may be used to avoid repetitions of regex patterns. Patterns are defined in `reader_scripts/patterns.py`. Other common patterns may be added there.
