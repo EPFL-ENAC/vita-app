@@ -82,9 +82,13 @@ func generateAndSaveOcrJson(_ cgImage: CGImage, _ path: URL) {
             let xShift = Double(xSplit) * shiftDist
             let yShift = Double(ySplit) * shiftDist
             
+            // yShift is defined from an origin at the bottom left, to be
+            // consistent with OCR bounding boxes.
+            // cropRegion assumes an origin at the top left. Hence, the y axis
+            // must be inverted.
             let cropRegion = CGRect(
                 x: xShift * Double(cgImage.width),
-                y: yShift * Double(cgImage.height),
+                y: (1 - yShift - PICTURE_SPLIT_SIZE) * Double(cgImage.height),
                 width: PICTURE_SPLIT_SIZE * Double(cgImage.width),
                 height: PICTURE_SPLIT_SIZE * Double(cgImage.height)
             )
