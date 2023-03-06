@@ -1,10 +1,10 @@
 import os
 
-from models import detected_text
 from reader_scripts.find_best_reader import find_best_reader
 from reader_scripts.list_of_readers import readers
 from utils import csv_writer
 from utils import image_management as imgm
+from utils.get_detected_text_from_json import get_detected_text_from_json
 from utils.get_list_of_json_paths import get_list_of_json_paths
 
 
@@ -33,20 +33,20 @@ def process_file(input_path, args, desired_reader):
     print(f"Processing {input_path}")
 
     # Import detected text from OCR output
-    all_detected_text = detected_text.gen_list_from_file(f"{input_path}.json")
+    detected_text_list = get_detected_text_from_json(f"{input_path}.json")
 
     # Define used reader
     if desired_reader is not None:
         reader = desired_reader
     else:
         # Find best reader for this file
-        reader = find_best_reader(all_detected_text)
+        reader = find_best_reader(detected_text_list)
         if reader is None:
             print(f"Could not find a matching reader for {input_path}")
             return
 
     # Generate structured output
-    data, filtered_detected_text, regions = reader.read(all_detected_text)
+    data, filtered_detected_text, regions = reader.read(detected_text_list)
 
     # Generate image with detected text
     if args.generate_images or args.display_images:

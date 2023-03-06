@@ -55,6 +55,18 @@ class BoundingBox:
             return False
         return True
 
+    def convert_to_absolute_coordinates(self, crop_region):
+        """Converts the bounding box to absolute coordinates
+
+        Args:
+            crop_region (CropRegion)
+        """
+
+        self.bottom_left.convert_to_absolute_coordinates(crop_region)
+        self.bottom_right.convert_to_absolute_coordinates(crop_region)
+        self.top_left.convert_to_absolute_coordinates(crop_region)
+        self.top_right.convert_to_absolute_coordinates(crop_region)
+
     def copy(self):
         return BoundingBox(
             self.bottom_left.copy(),
