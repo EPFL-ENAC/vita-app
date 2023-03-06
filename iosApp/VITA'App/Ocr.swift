@@ -12,22 +12,19 @@ import Vision
 import VisionKit
 
 
+let PICTURE_SPLITS = 3
+let PICTURE_SPLIT_SIZE = 0.5 // size of cropped region, between 0 and 1
+
+
 struct OcrRequest {
     var request: VNRecognizeTextRequest
     
-    init(_ outputPath: URL) {
+    init(_ croppedOcrResults: CroppedOcrResults, _ dispatchGroup: DispatchGroup) {
         request = VNRecognizeTextRequest { (request, error) in
             guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
         
-            // Text shown in interface
-            var ocrText = ""
-            // Data to be exported
-            var allDetected: [DetectedText] = []
-            
             for observation in observations {
                 guard let topCandidate = observation.topCandidates(1).first else { return }
-                
-                ocrText += topCandidate.string + "\n"
                 var detectedText = DetectedText(text: topCandidate.string)
                 
                 // Create range for bounding box detection
@@ -46,12 +43,11 @@ struct OcrRequest {
                     print("Could not retrieve bounding box for text \(topCandidate.string)")
                 } // Cannot get bounding box
                 
-                allDetected.append(detectedText)
+                croppedOcrResults.detectedTextList.append(detectedText)
             }
             
             DispatchQueue.main.async {
-                // Saving detected text into file text in local file system
-                exportJson(data: allDetected, to: outputPath)
+                dispatchGroup.leave()
             }
         }
         
@@ -62,7 +58,7 @@ struct OcrRequest {
 }
 
 
-/** Save image, perform OCR and save OCR data */
+/** Calls functions to save image, perform OCR and save OCR data */
 func processImage(_ image: UIImage) {
     guard let cgImage = image.cgImage else { return }
 
@@ -70,12 +66,59 @@ func processImage(_ image: UIImage) {
     let imagePath = generatePath(filename, "jpg")
     let jsonPath = generatePath(filename, "json")
     saveImage(image, imagePath)
+    generateAndSaveOcrJson(cgImage, jsonPath)
+}
 
-    let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-    let ocrRequest = OcrRequest(jsonPath)
-    do {
-        try requestHandler.perform([ocrRequest.request])
-    } catch {
-        print(error)
+
+/** Crop image into multiple small parts and perform OCR on them */
+func generateAndSaveOcrJson(_ cgImage: CGImage, _ path: URL) {
+    var results: [CroppedOcrResults] = []
+    let dispatchGroup = DispatchGroup()
+    
+    for xSplit in 0 ..< PICTURE_SPLITS {
+        for ySplit in 0 ..< PICTURE_SPLITS {
+            // Crop image
+            let shiftDist = (PICTURE_SPLITS == 1) ? 0 : (1 - PICTURE_SPLIT_SIZE) / Double(PICTURE_SPLITS - 1)
+            let xShift = Double(xSplit) * shiftDist
+            let yShift = Double(ySplit) * shiftDist
+            
+            let cropRegion = CGRect(
+                x: xShift * Double(cgImage.width),
+                y: yShift * Double(cgImage.height),
+                width: PICTURE_SPLIT_SIZE * Double(cgImage.width),
+                height: PICTURE_SPLIT_SIZE * Double(cgImage.height)
+            )
+            
+            guard let croppedImage = cgImage.cropping(to: cropRegion)
+            else {
+                print("Error: Could not crop image")
+                return
+            }
+            
+            // Create container for OCR results
+            let croppedOcrResults = CroppedOcrResults(cropRegion: CropRegion(
+                x: xShift,
+                y: yShift,
+                width: PICTURE_SPLIT_SIZE,
+                height: PICTURE_SPLIT_SIZE
+            ))
+            results.append(croppedOcrResults)
+            
+            // Create and perform OCR request
+            let requestHandler = VNImageRequestHandler(cgImage: croppedImage, options: [:])
+            let ocrRequest = OcrRequest(croppedOcrResults, dispatchGroup)
+            dispatchGroup.enter()
+            do {
+                try requestHandler.perform([ocrRequest.request])
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    // When all requests are processed, save JSON
+    dispatchGroup.notify(queue: .main) {
+        // Save detected text into file text in local file system
+        exportJson(data: results, to: path)
     }
 }

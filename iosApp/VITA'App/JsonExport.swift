@@ -15,7 +15,7 @@ struct Point: Codable {
 }
 
 
-struct Bbox: Codable {
+struct BoundingBox: Codable {
     var bottomLeft:  Point = Point()
     var bottomRight: Point = Point()
     var topLeft:     Point = Point()
@@ -25,23 +25,52 @@ struct Bbox: Codable {
 
 struct DetectedText: Codable {
     var text: String
-    var bbox: Bbox = Bbox()
+    var bbox: BoundingBox = BoundingBox()
 }
 
 
-func exportJson(data: [DetectedText], to: URL) {
+struct CropRegion: Codable {
+    var x: Double
+    var y: Double
+    var width: Double
+    var height: Double
+}
+
+
+// This is a class, for it to be passed by reference
+class CroppedOcrResults: Codable {
+    var cropRegion: CropRegion
+    var detectedTextList: [DetectedText] = []
+    
+    init(cropRegion: CropRegion) {
+        self.cropRegion = cropRegion
+    }
+}
+
+
+func exportJson(data: [CroppedOcrResults], to: URL) {
     /* Output detected text in JSON string
     format:
     [
-        {
+      {
+        cropRegion: {
+          x: Double,
+          y: Double,
+          width: Double,
+          height: Double
+        },
+        detectedTextList: [
+          {
             text: String,
             bbox: {
-                bottomLeft:  {x: Double, y: Double},
-                bottomRight: {x: Double, y: Double},
-                topleft:     {x: Double, y: Double},
-                topRight:    {x: Double, y: Double}
+              bottomLeft:  {x: Double, y: Double},
+              bottomRight: {x: Double, y: Double},
+              topleft:     {x: Double, y: Double},
+              topRight:    {x: Double, y: Double}
             }
-         },
+          },
+        ]
+      },
     ]
     */
     do {
