@@ -47,7 +47,7 @@ Retreive the OCR files `xxx.json` and `xxx.png` from the iOS device and put them
 cd analysis
 poetry run python main.py visualize-ocr path_to.json --display-images -o outputs/
 ```
-Shows the picture overlaid with detected OCR text and saves it in the `outputs` directory, following the same tree structure from as `path_to` (outputs will be in `outputs/path_to...`).
+Shows the picture overlaid with detected OCR text and saves it in the `outputs` directory.
 
 Multiple files can be processed at once:
 ```
