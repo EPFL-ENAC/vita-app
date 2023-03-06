@@ -1,7 +1,7 @@
 import os
 
-from models import detected_text
 from utils import image_management as imgm
+from utils.get_detected_text_from_json import get_detected_text_from_json
 from utils.get_list_of_json_paths import get_list_of_json_paths
 
 
@@ -25,11 +25,11 @@ def process_file(input_path, args):
     print(f"Processing {input_path}")
 
     # Import detected text from OCR output
-    all_detecteds_text = detected_text.gen_list_from_file(f"{input_path}.json")
+    detected_text_list = get_detected_text_from_json(f"{input_path}.json")
 
     # Generate image with detected text
     im = imgm.generate_from_ocr_data(
-        f"{input_path}.jpg", all_detecteds_text, verbose=args.verbose
+        f"{input_path}.jpg", detected_text_list, verbose=args.verbose
     )
 
     # Save image

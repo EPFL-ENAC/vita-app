@@ -1,5 +1,3 @@
-import json
-
 from models.bounding_box import BoundingBox
 
 
@@ -40,17 +38,3 @@ class DetectedText:
     def from_data(data):
         """Creates new instance from dictionnary"""
         return DetectedText(data["text"], BoundingBox.from_data(data["bbox"]))
-
-
-def gen_list_from_file(filename):
-    # Read JSON input
-    f = open(filename)
-    data = json.load(f)
-    f.close()
-
-    all_detected_text = []
-
-    for d in data:
-        all_detected_text.append(DetectedText.from_data(d))
-
-    return all_detected_text

@@ -3,8 +3,9 @@ class Point:
         self.x = x
         self.y = y
 
-    def toTuple(self):
-        return (self.x, self.y)
+    def convert_to_absolute_coordinates(self, crop_region):
+        self.x = self.x * crop_region.width + crop_region.x
+        self.y = self.y * crop_region.height + crop_region.y
 
     def copy(self):
         return Point(self.x, self.y)
