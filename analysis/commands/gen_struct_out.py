@@ -65,7 +65,11 @@ def process_file(input_path, args, desired_reader):
 
     # Save
     if args.output_dir is not None:
-        output_path = os.path.join(args.output_dir, input_path)
+        output_path = os.path.join(
+            args.output_dir, os.path.basename(input_path)
+        )
+        # Create the directory if it doesn't exist
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
         if im is not None:
             imgm.save(im, f"{output_path}_filtered.jpg")
         csv_writer.write(data, f"{output_path}.csv")

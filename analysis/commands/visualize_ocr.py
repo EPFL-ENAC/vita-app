@@ -34,7 +34,11 @@ def process_file(input_path, args):
 
     # Save image
     if args.output_dir is not None:
-        output_path = os.path.join(args.output_dir, input_path)
+        output_path = os.path.join(
+            args.output_dir, os.path.basename(input_path)
+        )
+        # Create the directory if it doesn't exist
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
         imgm.save(im, f"{output_path}_all.jpg")
 
     # Show image
