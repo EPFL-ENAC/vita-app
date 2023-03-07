@@ -6,3 +6,6 @@ test:
 
 lint:
 	$(MAKE) -C analysis lint
+
+doc:
+	$(MAKE) -C analysis doc
