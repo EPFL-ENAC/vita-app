@@ -124,7 +124,7 @@ def search_data(keys, search_func, *args, **kwargs):
         **kwargs: keyword arguments passed to search_func
 
     Returns:
-        new_data ([{key: string}]): data built from the search
+        new_data ([dict ot str:str]): data built from the search
         candidates ([Candidate]): candidates found by search_func
         errors (int): number of errors in the best match
     """
@@ -165,7 +165,7 @@ def search_data_relative(references, keys, search_func, *args, **kwargs):
         **kwargs: keyword arguments passed to search_func
 
     Returns:
-        best_new_data ([{key: string}]): data built from the search
+        best_new_data ([dict ot str:str]): data built from the search
         best_reference (Candidate): reference that led to best match
         best_candidates ([Candidate]): candidates found by search_func
         best_errors (int): number of errors in the best match
