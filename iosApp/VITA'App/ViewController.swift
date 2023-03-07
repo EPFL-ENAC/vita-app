@@ -15,14 +15,11 @@ class ViewController: UIViewController {
     private var ocrTextView = OcrTextView(frame: .zero, textContainer: nil)
     private var scanButton = ScanButton(frame: .zero)
     private var scanImageView = ScanImageView(frame: .zero)
-    private var ocrRequest = VNRecognizeTextRequest(completionHandler: nil)
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configure()
-        configureOCR()
     }
 
     
@@ -60,63 +57,6 @@ class ViewController: UIViewController {
         present(scanVC, animated: true)
     }
     
-    
-    private func processImage(_ image: UIImage) {
-        guard let cgImage = image.cgImage else { return }
-
-        ocrTextView.text = ""
-        scanButton.isEnabled = false
-        
-        let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-        do {
-            try requestHandler.perform([self.ocrRequest])
-        } catch {
-            print(error)
-        }
-    }
-
-    
-    private func configureOCR() {
-        ocrRequest = VNRecognizeTextRequest { (request, error) in
-            guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
-        
-            var ocrText = ""
-            for observation in observations {
-                guard let topCandidate = observation.topCandidates(1).first else { return }
-                
-                ocrText += topCandidate.string + "\n"
-                
-            }
-            
-            
-            DispatchQueue.main.async {
-                self.ocrTextView.text = ocrText
-                self.scanButton.isEnabled = true
-                //print(ocrText)
-                
-                // Saving detected text into file text in local file system
-                // begin
-                
-                if let dir = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true).first {
-                    //This gives you the string formed path
-                    
-                    do{
-                        try ocrText.write(toFile: "\(dir)/DetectedText.txt", atomically: true, encoding: String.Encoding.utf8)
-                        print(dir)
-                        print("Successful - file written")
-                    }
-                    catch _{
-                        print("Error")
-                    }
-                }
-                // end
-            }
-        }
-        
-        ocrRequest.recognitionLevel = .accurate
-        ocrRequest.recognitionLanguages = ["en-US", "en-GB", "fr-FR"]
-        ocrRequest.usesLanguageCorrection = true
-    }
 }
 
 
@@ -127,8 +67,18 @@ extension ViewController: VNDocumentCameraViewControllerDelegate {
             return
         }
         
-        scanImageView.image = scan.imageOfPage(at: 0)
-        processImage(scan.imageOfPage(at: 0))
+        ocrTextView.text = ""
+        
+        for i in 0 ..< scan.pageCount {
+            let image = scan.imageOfPage(at: i)
+            
+            // Show last picture on screen
+            if i == scan.pageCount - 1 {
+                scanImageView.image = image
+            }
+            processImage(image)
+        }
+        
         controller.dismiss(animated: true)
     }
     
@@ -141,4 +91,3 @@ extension ViewController: VNDocumentCameraViewControllerDelegate {
         controller.dismiss(animated: true)
     }
 }
-
