@@ -18,7 +18,6 @@ func getSaveDirectory() -> URL {
 }
 
 
-// TODO: keep track of last generated filename and check for uniqueness
 func generateNewFilename() -> String {
     let currentDate = Date()
     let formatter = DateFormatter()
