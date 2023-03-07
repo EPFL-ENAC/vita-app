@@ -67,7 +67,6 @@ extension ViewController: VNDocumentCameraViewControllerDelegate {
             return
         }
         
-        // TODO: remove view or put content in it
         ocrTextView.text = ""
         
         for i in 0 ..< scan.pageCount {
