@@ -3,6 +3,9 @@ env
 node_modules
 __pycache__
 
+analysis/docs/build
+analysis/docs/source
+
 
 # Xcode
 #

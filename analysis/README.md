@@ -3,6 +3,15 @@
 `commands/gen_struct_out.py` is the entry point of the analysis. The OCR `.json` file is read to create a list of `DetectedText`, defined in `models/detected_text.py`, with information on the read text and the bounding boxes. Then, data is extracted from this list using a specific reader (for example, look at a definition in `readers/alcon_ex_500.json`). The reader rely on fuzzy string matching and relative positioning of bounding boxes (see `reader_scripts/search.py`).
 
 
+## Build documentation
+
+Run
+```
+make doc
+```
+The documentation files are built in the `analysis/docs/build/html` directory.
+
+
 # Software description file
 
 The layout of documents rendered by any software can be described in a `.json` file placed inside the `readers` directory. The `.json` description file must have the following format:
