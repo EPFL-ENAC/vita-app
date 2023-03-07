@@ -30,6 +30,7 @@ extensions = [
 
 
 templates_path = ["_templates"]
+napoleon_custom_sections = [("Returns", "params_style")]
 
 # -- Options for HTML output
 

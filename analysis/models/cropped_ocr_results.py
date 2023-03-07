@@ -3,12 +3,12 @@ from .detected_text import DetectedText
 
 
 class CroppedOcrResults:
-    def __init__(self, crop_region):
-        """OCR results for a cropped piece of the whole image
+    """OCR results for a cropped piece of the whole image
 
-        The bounding boxes of the detected text are relative to the crop
-        region.
-        """
+    The bounding boxes of the detected text are relative to the crop region.
+    """
+
+    def __init__(self, crop_region):
         self.crop_region = crop_region
         self.detected_text_list = []
 
