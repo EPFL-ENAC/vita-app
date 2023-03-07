@@ -4,6 +4,9 @@ _Picture to Structured Text_
 
 Read an eye examination medical report using a mobile iOS device and extract the relevant data in a `.csv` file.
 
+The concept, inner working and performance of this codebase are explored in the following presentation:  
+[S. Pham-Ba, *VITA'App, Picture to Structured text, Tech meeting*, 2023](https://github.com/EPFL-ENAC/vita-app/files/10909181/2023.03.06.-.VITA.App.Tech.meeting.pdf)
+
 
 # 🖥 Supported document layouts
 
