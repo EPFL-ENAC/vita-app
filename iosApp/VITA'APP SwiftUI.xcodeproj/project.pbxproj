@@ -60,7 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				80B208C329BB875300DB3BC0 /* VITA_APP_SwitUIApp.swift */,
-				80B208D229BB891E00DB3BC0 /* Controllers */,
+				80B208D229BB891E00DB3BC0 /* Models */,
 				80B208D129BB891500DB3BC0 /* Views */,
 				80B208C729BB875400DB3BC0 /* Assets.xcassets */,
 				80B208C929BB875400DB3BC0 /* Preview Content */,
@@ -85,14 +85,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		80B208D229BB891E00DB3BC0 /* Controllers */ = {
+		80B208D229BB891E00DB3BC0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				80B208D529BB91C300DB3BC0 /* Ocr.swift */,
 				80B208D929BB928A00DB3BC0 /* Saving.swift */,
 				80B208D729BB921500DB3BC0 /* JsonExport.swift */,
 			);
-			path = Controllers;
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

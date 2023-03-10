@@ -44,7 +44,7 @@ func saveImage(_ image: UIImage, _ path: URL) {
     }
     
     do {
-        try jpg.write(to: path)
+        try jpg.write(to: path) 
         print("Picture saved successfully")
     }
     catch {
