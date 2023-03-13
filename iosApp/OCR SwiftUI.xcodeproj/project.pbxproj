@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		80B208C429BB875300DB3BC0 /* VITA_APP_SwitUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B208C329BB875300DB3BC0 /* VITA_APP_SwitUIApp.swift */; };
+		80B208C429BB875300DB3BC0 /* OCR_SwitUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B208C329BB875300DB3BC0 /* OCR_SwitUIApp.swift */; };
 		80B208C629BB875300DB3BC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B208C529BB875300DB3BC0 /* ContentView.swift */; };
 		80B208C829BB875400DB3BC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80B208C729BB875400DB3BC0 /* Assets.xcassets */; };
 		80B208CB29BB875400DB3BC0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80B208CA29BB875400DB3BC0 /* Preview Assets.xcassets */; };
@@ -18,8 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		80B208C029BB875300DB3BC0 /* VITA'APP SwitUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VITA'APP SwitUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		80B208C329BB875300DB3BC0 /* VITA_APP_SwitUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VITA_APP_SwitUIApp.swift; sourceTree = "<group>"; };
+		80B208C029BB875300DB3BC0 /* OCR SwitUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OCR SwitUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80B208C329BB875300DB3BC0 /* OCR_SwitUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR_SwitUIApp.swift; sourceTree = "<group>"; };
 		80B208C529BB875300DB3BC0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		80B208C729BB875400DB3BC0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		80B208CA29BB875400DB3BC0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -43,7 +43,7 @@
 		80B208B729BB875300DB3BC0 = {
 			isa = PBXGroup;
 			children = (
-				80B208C229BB875300DB3BC0 /* VITA'APP SwitUI */,
+				80B208C229BB875300DB3BC0 /* OCR SwitUI */,
 				80B208C129BB875300DB3BC0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -51,21 +51,21 @@
 		80B208C129BB875300DB3BC0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				80B208C029BB875300DB3BC0 /* VITA'APP SwitUI.app */,
+				80B208C029BB875300DB3BC0 /* OCR SwitUI.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		80B208C229BB875300DB3BC0 /* VITA'APP SwitUI */ = {
+		80B208C229BB875300DB3BC0 /* OCR SwitUI */ = {
 			isa = PBXGroup;
 			children = (
-				80B208C329BB875300DB3BC0 /* VITA_APP_SwitUIApp.swift */,
+				80B208C329BB875300DB3BC0 /* OCR_SwitUIApp.swift */,
 				80B208D229BB891E00DB3BC0 /* Models */,
 				80B208D129BB891500DB3BC0 /* Views */,
 				80B208C729BB875400DB3BC0 /* Assets.xcassets */,
 				80B208C929BB875400DB3BC0 /* Preview Content */,
 			);
-			path = "VITA'APP SwitUI";
+			path = "OCR SwitUI";
 			sourceTree = "<group>";
 		};
 		80B208C929BB875400DB3BC0 /* Preview Content */ = {
@@ -98,9 +98,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		80B208BF29BB875300DB3BC0 /* VITA'APP SwitUI */ = {
+		80B208BF29BB875300DB3BC0 /* OCR SwitUI */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80B208CE29BB875400DB3BC0 /* Build configuration list for PBXNativeTarget "VITA'APP SwitUI" */;
+			buildConfigurationList = 80B208CE29BB875400DB3BC0 /* Build configuration list for PBXNativeTarget "OCR SwitUI" */;
 			buildPhases = (
 				80B208BC29BB875300DB3BC0 /* Sources */,
 				80B208BD29BB875300DB3BC0 /* Frameworks */,
@@ -110,9 +110,9 @@
 			);
 			dependencies = (
 			);
-			name = "VITA'APP SwitUI";
+			name = "OCR SwitUI";
 			productName = "VITA'APP SwitUI";
-			productReference = 80B208C029BB875300DB3BC0 /* VITA'APP SwitUI.app */;
+			productReference = 80B208C029BB875300DB3BC0 /* OCR SwitUI.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -130,7 +130,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 80B208BB29BB875300DB3BC0 /* Build configuration list for PBXProject "VITA'APP SwiftUI" */;
+			buildConfigurationList = 80B208BB29BB875300DB3BC0 /* Build configuration list for PBXProject "OCR SwiftUI" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -143,7 +143,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				80B208BF29BB875300DB3BC0 /* VITA'APP SwitUI */,
+				80B208BF29BB875300DB3BC0 /* OCR SwitUI */,
 			);
 		};
 /* End PBXProject section */
@@ -170,7 +170,7 @@
 				80B208C629BB875300DB3BC0 /* ContentView.swift in Sources */,
 				80B208DA29BB928A00DB3BC0 /* Saving.swift in Sources */,
 				80B208D829BB921500DB3BC0 /* JsonExport.swift in Sources */,
-				80B208C429BB875300DB3BC0 /* VITA_APP_SwitUIApp.swift in Sources */,
+				80B208C429BB875300DB3BC0 /* OCR_SwitUIApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,7 +298,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"VITA'APP SwitUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"OCR SwitUI/Preview Content\"";
 				DEVELOPMENT_TEAM = H424495YM7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -308,6 +308,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -329,7 +330,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"VITA'APP SwitUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"OCR SwitUI/Preview Content\"";
 				DEVELOPMENT_TEAM = H424495YM7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -339,6 +340,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -356,7 +358,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		80B208BB29BB875300DB3BC0 /* Build configuration list for PBXProject "VITA'APP SwiftUI" */ = {
+		80B208BB29BB875300DB3BC0 /* Build configuration list for PBXProject "OCR SwiftUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80B208CC29BB875400DB3BC0 /* Debug */,
@@ -365,7 +367,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80B208CE29BB875400DB3BC0 /* Build configuration list for PBXNativeTarget "VITA'APP SwitUI" */ = {
+		80B208CE29BB875400DB3BC0 /* Build configuration list for PBXNativeTarget "OCR SwitUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80B208CF29BB875400DB3BC0 /* Debug */,

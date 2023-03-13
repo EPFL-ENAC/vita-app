@@ -1,6 +1,6 @@
 //
 //  JsonExport.swift
-//  VITA'APP SwitUI
+//  OCR SwitUI
 //
 //  Created by Tom MERY on 10.03.23.
 //
@@ -79,6 +79,7 @@ func exportJson(data: [CroppedOcrResults], to: URL) {
         let path = to.path
         try jsonString.write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
         print("File written successfully")
+        
     } catch {
         print("Error exporting JSON: \(error)")
     }

@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  VITA'APP SwitUI
+//  OCR SwitUI
 //
 //  Created by Tom MERY on 10.03.23.
 //
@@ -16,12 +16,6 @@ struct ContentView: View {
                 Button("Scan",
                        action: {self.showScannerSheet = true}
                 )
-                
-                Button(action: {
-                      browseFiles()
-                  }) {
-                      Text("Open in Files App").frame(minWidth: 0, maxWidth: .infinity)
-                  }
             }
             .sheet(isPresented: $showScannerSheet, content: {
                 self.makeScannerView()
@@ -34,16 +28,6 @@ struct ContentView: View {
             _ in
             self.showScannerSheet = false
         })
-    }
-    
-    func browseFiles() {
-        let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        print(documentsUrl)
-        if let sharedUrl = URL(string: "shareddocuments://\(documentsUrl.path)") {
-            if UIApplication.shared.canOpenURL(sharedUrl) {
-                UIApplication.shared.open(sharedUrl, options: [:])
-            }
-        }
     }
 }
 

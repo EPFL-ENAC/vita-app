@@ -1,6 +1,6 @@
 //
 //  Saving.swift
-//  VITA'APP SwitUI
+//  OCR SwitUI
 //
 //  Created by Tom MERY on 10.03.23.
 //
