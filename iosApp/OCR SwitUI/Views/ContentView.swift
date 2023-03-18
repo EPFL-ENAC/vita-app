@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showScannerSheet = false
+    @State private var ocrData: Data?
     
     var body: some View {
         NavigationView{
@@ -20,14 +21,27 @@ struct ContentView: View {
             .sheet(isPresented: $showScannerSheet, content: {
                 self.makeScannerView()
             })
+            .onChange(of: ocrData) { jsonData in
+                if let data = jsonData {
+                    Task {
+                        await makeServerRequest(data: data)
+                    }
+                }
+            }
         }
     }
     
     private func makeScannerView() -> ScannerView {
         ScannerView(completion: {
-            _ in
+            jsonData in
+            self.ocrData = jsonData
             self.showScannerSheet = false
         })
+    }
+    
+    func makeServerRequest(data: Data) async {
+        let client = HttpClient()
+        await client.sendRequest(jsonData: data)
     }
 }
 

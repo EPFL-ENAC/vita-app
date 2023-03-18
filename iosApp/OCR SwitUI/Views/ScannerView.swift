@@ -9,9 +9,9 @@ import VisionKit
 import SwiftUI
 
 struct ScannerView: UIViewControllerRepresentable {
-    private let completionHandler: ([String]?) -> Void
+    private let completionHandler: (Data?) -> Void
      
-    init(completion: @escaping ([String]?) -> Void) {
+    init(completion: @escaping (Data?) -> Void) {
         self.completionHandler = completion
     }
      
@@ -30,9 +30,9 @@ struct ScannerView: UIViewControllerRepresentable {
     }
      
     final class Coordinator: NSObject, VNDocumentCameraViewControllerDelegate {
-        private let completionHandler: ([String]?) -> Void
+        private let completionHandler: (Data?) -> Void
          
-        init(completion: @escaping ([String]?) -> Void) {
+        init(completion: @escaping (Data?) -> Void) {
             self.completionHandler = completion
         }
          
@@ -46,7 +46,9 @@ struct ScannerView: UIViewControllerRepresentable {
             for i in 0 ..< scan.pageCount {
                 let image = scan.imageOfPage(at: i)
                 
-                processImage(image)
+                processImage(image) { jsonData in
+                    self.completionHandler(jsonData)
+                }
             }
             
             completionHandler(nil)

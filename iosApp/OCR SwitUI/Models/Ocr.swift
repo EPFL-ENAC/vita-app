@@ -58,19 +58,21 @@ struct OcrRequest {
 
 
 /** Calls functions to save image, perform OCR and save OCR data */
-func processImage(_ image: UIImage) {
+func processImage(_ image: UIImage, completion: @escaping((Data?) -> Void)) {
     guard let cgImage = image.cgImage else { return }
-
+    
     let filename = generateNewFilename()
     let imagePath = generatePath(filename, "jpg")
     let jsonPath = generatePath(filename, "json")
     saveImage(image, imagePath)
-    generateAndSaveOcrJson(cgImage, jsonPath)
+    generateAndSaveOcrJson(cgImage, jsonPath) { data in
+        completion(data)
+    }
 }
 
 
 /** Crop image into multiple small parts and perform OCR on them */
-func generateAndSaveOcrJson(_ cgImage: CGImage, _ path: URL) {
+func generateAndSaveOcrJson(_ cgImage: CGImage, _ path: URL, completion: @escaping((Data?) -> Void)) {
     var results: [CroppedOcrResults] = []
     let dispatchGroup = DispatchGroup()
     
@@ -122,7 +124,8 @@ func generateAndSaveOcrJson(_ cgImage: CGImage, _ path: URL) {
     // When all requests are processed, save JSON
     dispatchGroup.notify(queue: .main) {
         // Save detected text into file text in local file system
-        exportJson(data: results, to: path)
+        let jsonData = exportJson(data: results, to: path)
+        completion(jsonData)
     }
 }
 
