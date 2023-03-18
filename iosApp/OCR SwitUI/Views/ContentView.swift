@@ -41,7 +41,12 @@ struct ContentView: View {
     
     func makeServerRequest(data: Data) async {
         let client = HttpClient()
-        await client.sendRequest(jsonData: data)
+        guard let structuredData = await client.sendRequest(jsonData: data) else {
+            // Handle error
+            return
+        }
+        
+        
     }
 }
 
