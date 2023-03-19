@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var showScannerSheet = false
     @State private var ocrData: Data?
+    @EnvironmentObject private var fileController: FileController
     
     var body: some View {
         NavigationView{
@@ -42,16 +43,15 @@ struct ContentView: View {
     func makeServerRequest(data: Data) async {
         let client = HttpClient()
         guard let structuredData = await client.sendRequest(jsonData: data) else {
-            // Handle error
             return
         }
-        
-        
+        fileController.writeCSV(data: structuredData)
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().environmentObject(FileController())
     }
 }

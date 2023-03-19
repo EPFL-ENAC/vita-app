@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct OCR_SwitUIApp: App {
+    @StateObject private var fileController = FileController()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(fileController)
         }
     }
 }

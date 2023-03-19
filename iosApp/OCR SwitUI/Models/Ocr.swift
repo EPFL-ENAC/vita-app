@@ -61,18 +61,19 @@ struct OcrRequest {
 func processImage(_ image: UIImage, completion: @escaping((Data?) -> Void)) {
     guard let cgImage = image.cgImage else { return }
     
-    let filename = generateNewFilename()
-    let imagePath = generatePath(filename, "jpg")
-    let jsonPath = generatePath(filename, "json")
-    saveImage(image, imagePath)
-    generateAndSaveOcrJson(cgImage, jsonPath) { data in
+    let fileController = FileController()
+    let filename = fileController.generateNewFilename()
+    let imagePath = fileController.generatePath(filename, "jpg")
+    let jsonPath = fileController.generatePath(filename, "json")
+    fileController.saveImage(image, imagePath)
+    generateOcrJson(cgImage, jsonPath) { data in
         completion(data)
     }
 }
 
 
 /** Crop image into multiple small parts and perform OCR on them */
-func generateAndSaveOcrJson(_ cgImage: CGImage, _ path: URL, completion: @escaping((Data?) -> Void)) {
+func generateOcrJson(_ cgImage: CGImage, _ path: URL, completion: @escaping((Data?) -> Void)) {
     var results: [CroppedOcrResults] = []
     let dispatchGroup = DispatchGroup()
     
