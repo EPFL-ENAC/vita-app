@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var showScannerSheet = false
     @State private var ocrData: Data?
     @EnvironmentObject private var fileController: FileController
-    
+    @EnvironmentObject private var client: HttpClient
     var body: some View {
         NavigationView{
             VStack {
@@ -30,6 +30,13 @@ struct ContentView: View {
                 }
             }
         }
+        .alert(isPresented: $client.showAlert) {
+            Alert(
+                title: Text("Server error"),
+                message: Text(client.error),
+                dismissButton: .default(Text("Got it!"))
+            )
+        }
     }
     
     private func makeScannerView() -> ScannerView {
@@ -41,7 +48,6 @@ struct ContentView: View {
     }
     
     func makeServerRequest(data: Data) async {
-        let client = HttpClient()
         guard let structuredData = await client.sendRequest(jsonData: data) else {
             return
         }
@@ -52,6 +58,8 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(FileController())
+        ContentView()
+            .environmentObject(FileController())
+            .environmentObject(HttpClient())
     }
 }

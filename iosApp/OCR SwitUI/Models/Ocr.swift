@@ -64,16 +64,15 @@ func processImage(_ image: UIImage, completion: @escaping((Data?) -> Void)) {
     let fileController = FileController()
     let filename = fileController.generateNewFilename()
     let imagePath = fileController.generatePath(filename, "jpg")
-    let jsonPath = fileController.generatePath(filename, "json")
     fileController.saveImage(image, imagePath)
-    generateOcrJson(cgImage, jsonPath) { data in
+    generateOcrJson(cgImage) { data in
         completion(data)
     }
 }
 
 
 /** Crop image into multiple small parts and perform OCR on them */
-func generateOcrJson(_ cgImage: CGImage, _ path: URL, completion: @escaping((Data?) -> Void)) {
+func generateOcrJson(_ cgImage: CGImage, completion: @escaping((Data?) -> Void)) {
     var results: [CroppedOcrResults] = []
     let dispatchGroup = DispatchGroup()
     
@@ -125,7 +124,7 @@ func generateOcrJson(_ cgImage: CGImage, _ path: URL, completion: @escaping((Dat
     // When all requests are processed, save JSON
     dispatchGroup.notify(queue: .main) {
         // Save detected text into file text in local file system
-        let jsonData = exportJson(data: results, to: path)
+        let jsonData = exportJson(data: results)
         completion(jsonData)
     }
 }

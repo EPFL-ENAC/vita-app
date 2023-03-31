@@ -47,7 +47,7 @@ class CroppedOcrResults: Codable {
 }
 
 
-func exportJson(data: [CroppedOcrResults], to: URL) -> Data? {
+func exportJson(data: [CroppedOcrResults]) -> Data? {
     /* Output detected text in JSON string
     format:
     [
@@ -64,7 +64,7 @@ func exportJson(data: [CroppedOcrResults], to: URL) -> Data? {
             bbox: {
               bottomLeft:  {x: Double, y: Double},
               bottomRight: {x: Double, y: Double},
-              topleft:     {x: Double, y: Double},
+              topLeft:     {x: Double, y: Double},
               topRight:    {x: Double, y: Double}
             }
           },

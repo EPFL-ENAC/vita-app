@@ -10,10 +10,13 @@ import SwiftUI
 @main
 struct OCR_SwitUIApp: App {
     @StateObject private var fileController = FileController()
+    @StateObject private var client = HttpClient()
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(fileController)
+            ContentView()
+                .environmentObject(fileController)
+                .environmentObject(client)
         }
     }
 }
